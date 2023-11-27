@@ -1,7 +1,21 @@
 <template>
-  <div></div>
+  <div>
+    <pl-button type="danger" class="w200" @click="handleClick($event, '123')">防抖按钮</pl-button>
+  </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import { sleep } from '@app/utils/index';
 
-<style scoped></style>
+  const handleClick = async (e: Event, str: string) => {
+    console.log(e, str);
+    await sleep(1000);
+  };
+</script>
+
+<style scoped>
+  .w200 {
+    width: 200px;
+    height: 40px;
+  }
+</style>

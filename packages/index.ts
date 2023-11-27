@@ -1,11 +1,14 @@
 import { App } from 'vue';
-import VuePublicButton from './components/Button';
-export { default as PLButton } from './components/Button';
+import VuePublicButton from './components/Button/index.vue';
+export { default as PLButton } from './components/Button/index.vue';
+
+export const install = (app: App) => {
+  app.component(VuePublicButton.name, VuePublicButton);
+  return app;
+};
 
 export default {
-  install(app: App) {
-    app.component(VuePublicButton.name, VuePublicButton);
-  },
+  install: install,
 };
 
 export * from './types';

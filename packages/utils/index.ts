@@ -1,4 +1,5 @@
 export * from './router';
+export * from './plugin';
 /**
  * 等待一段时间
  * @param time 等待时间
