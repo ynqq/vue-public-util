@@ -59,8 +59,8 @@ const footerFun = () => {
 
 export const showAddModal = usePLModal(Modal, {
   title: 'asd',
-  confirmText: '等等',
-  cancelText: '关闭',
+  // confirmText: '等等',
+  // cancelText: '关闭',
   cancelProps: {
     type: 'danger',
   },
@@ -72,7 +72,7 @@ export const showAddModal = usePLModal(Modal, {
   showClose: false,
   closeOnClickModal: true,
   closeOnPressEscape: true,
-  footer: footerFun,
+  // footer: footerFun,
   // hideFooter: true,
   // hideHeader: true,
 });

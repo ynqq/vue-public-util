@@ -2,6 +2,13 @@
   "name": "vue-public-util",
   "version": "0.0.1",
   "type": "commonjs",
+  "author": {
+    "name": "ynqq"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ynqq/vue-public-util"
+  },
   "types": "./dist/index.d.ts",
   "main": "./dist/vue-public-util.es.js",
   "module": "./dist/vue-public-util.es.js",

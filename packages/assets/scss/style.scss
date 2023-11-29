@@ -1,0 +1,134 @@
+.pl-loading-box {  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999999;
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba($color: #ffffff, $alpha: 0.3);
+    backdrop-filter: blur(4px);
+  }
+  .pl-loading-spinner,
+  .pl-loading-spinner > div {
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .pl-loading-spinner {
+    display: block;
+    font-size: 0;
+    color: #000;
+  }
+
+  .pl-loading-spinner.la-dark {
+    color: #333;
+  }
+
+  .pl-loading-spinner > div {
+    display: inline-block;
+    float: none;
+    background-color: currentColor;
+    border: 0 solid currentColor;
+  }
+
+  .pl-loading-spinner {
+    width: 42px;
+    height: 32px;
+  }
+
+  .pl-loading-spinner > div:nth-child(1) {
+    position: absolute;
+    bottom: 32%;
+    left: 18%;
+    width: 14px;
+    height: 14px;
+    border-radius: 100%;
+    transform-origin: center bottom;
+    animation: ball-climbing-dot-jump 0.6s ease-in-out infinite;
+  }
+
+  .pl-loading-spinner > div:not(:nth-child(1)) {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 14px;
+    height: 2px;
+    border-radius: 0;
+    transform: translate(60%, 0);
+    animation: ball-climbing-dot-steps 1.8s linear infinite;
+  }
+
+  .pl-loading-spinner > div:not(:nth-child(1)):nth-child(2) {
+    animation-delay: 0ms;
+  }
+
+  .pl-loading-spinner > div:not(:nth-child(1)):nth-child(3) {
+    animation-delay: -600ms;
+  }
+
+  .pl-loading-spinner > div:not(:nth-child(1)):nth-child(4) {
+    animation-delay: -1200ms;
+  }
+}
+
+@keyframes ball-climbing-dot-jump {
+  0% {
+    transform: scale(1, 0.7);
+  }
+
+  20% {
+    transform: scale(0.7, 1.2);
+  }
+
+  40% {
+    transform: scale(1, 1);
+  }
+
+  50% {
+    bottom: 125%;
+  }
+
+  46% {
+    transform: scale(1, 1);
+  }
+
+  80% {
+    transform: scale(0.7, 1.2);
+  }
+
+  90% {
+    transform: scale(0.7, 1.2);
+  }
+
+  100% {
+    transform: scale(1, 0.7);
+  }
+}
+
+@keyframes ball-climbing-dot-steps {
+  0% {
+    top: 0;
+    right: 0;
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    top: 100%;
+    right: 100%;
+    opacity: 0;
+  }
+}

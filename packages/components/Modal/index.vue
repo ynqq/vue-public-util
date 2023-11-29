@@ -15,10 +15,10 @@
     <template v-if="!hideFooter" #footer>
       <template v-if="!FooterCom">
         <VuePublicButton type="primary" class="pl-default-btn" v-bind="confirmProps" @click="handleConfirm">
-          {{ confirmText }}
+          {{ confirmText || $t('confirm') }}
         </VuePublicButton>
         <VuePublicButton v-bind="cancelProps" @click="handleCancel">
-          {{ cancelText }}
+          {{ cancelText || $t('cancel') }}
         </VuePublicButton>
       </template>
       <FooterCom v-else />
@@ -43,8 +43,6 @@
   const props = withDefaults(defineProps<IPLContainerProps>(), {
     closeOnClickModal: false,
     closeOnPressEscape: false,
-    confirmText: '确定',
-    cancelText: '取消',
   });
 
   const { ...otherAttrs } = useAttrs();
@@ -55,6 +53,7 @@
 
   const visible = ref(false);
   let handing = false;
+  let isCloseEvent = false;
 
   const checkHandling = () => {
     if (handing) {
@@ -75,9 +74,17 @@
     }
   };
 
+  const setHanding = async () => {
+    await sleep(400);
+    handing = false;
+  };
+  // close 不能触发cancel事件
   const close: IPLContainerProvide['close'] = async () => {
+    isCloseEvent = true;
     visible.value = false;
+    setHanding();
     await sleep(300);
+    isCloseEvent = false;
   };
   const getChildOptions = (options: Partial<IPLContainerValues>) => {
     return {
@@ -94,7 +101,7 @@
         childFun && (data = await childFun(getChildOptions({ isConfirm: true })));
         emit('confirm', data);
       } finally {
-        handing = false;
+        setHanding();
       }
     }
   };
@@ -106,7 +113,7 @@
           childFun && (data = await childFun(getChildOptions({ isCancel: true })));
           emit('confirm', data);
         } finally {
-          handing = false;
+          setHanding();
         }
         return;
       }
@@ -115,6 +122,9 @@
     }
   };
   const handleClose = () => {
+    if (isCloseEvent) {
+      return;
+    }
     emit('cancel');
   };
   onMounted(() => {
@@ -129,7 +139,7 @@
         const data = await childRef.value[funName](getChildOptions(options));
         return data;
       } finally {
-        handing = false;
+        setHanding();
       }
     }
   };

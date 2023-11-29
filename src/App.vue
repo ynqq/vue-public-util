@@ -10,8 +10,12 @@
   import { showAddModal } from './components/modal/util';
 
   const handleShowModal = async () => {
-    const ops = await showAddModal({});
-    console.log(ops);
+    try {
+      const ops = await showAddModal({});
+      console.log(ops);
+    } catch (error) {
+      console.log(error);
+    }
   };
 </script>
 
