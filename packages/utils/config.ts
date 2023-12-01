@@ -10,6 +10,10 @@ export const getConfigLanguages = () => {
   const { langus } = config;
   return langus;
 };
+export const getConfigLoading = () => {
+  const { loading } = config;
+  return loading;
+};
 
 export const setConfig = (options: Partial<IConfigOptions> = {}) => {
   deepObjectAssign(config, options);

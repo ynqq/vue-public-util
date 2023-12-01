@@ -1,10 +1,12 @@
 {
   "name": "vue-public-util",
   "version": "0.0.1",
-  "type": "commonjs",
   "author": {
     "name": "ynqq"
   },
+  "files": [
+    "/dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/ynqq/vue-public-util"
@@ -13,7 +15,11 @@
   "main": "./dist/vue-public-util.es.js",
   "module": "./dist/vue-public-util.es.js",
   "exports": {
-    ".": "./dist/vue-public-util.es.js",
+    ".": {
+      "import": "./dist/vue-public-util.es.js",
+      "types": "./dist/index.d.ts",
+      "require": "./dist/vue-public-util.umd.js"
+    },
     "./*": "./*"
   },
   "scripts": {

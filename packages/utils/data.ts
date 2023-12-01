@@ -1,41 +1,41 @@
 type TDataType = 'Number' | 'String' | 'Boolean' | 'Symbol' | 'Null' | 'Undefined' | 'Array' | 'Object' | 'Function' | 'Set' | 'Map';
-type TFormatType<T extends TDataType = TDataType> = `is${Capitalize<T>}`;
+// type TFormatType<T extends TDataType = TDataType> = `is${Capitalize<T>}`;
 export const getDataType = (data: any): TDataType => {
   return Object.prototype.toString.call(data).replace(/\[object (.*)\]/, '$1') as TDataType;
 };
 
-export const DataUtil: Record<TFormatType<TDataType>, (data: any) => boolean> = {
-  isNumber(data) {
+export const DataUtil = {
+  isNumber(data: any): data is number {
     return getDataType(data) === 'Number';
   },
-  isString(data) {
+  isString(data: any): data is string {
     return getDataType(data) === 'String';
   },
-  isBoolean(data) {
+  isBoolean(data: any): data is boolean {
     return getDataType(data) === 'Boolean';
   },
-  isSymbol(data) {
+  isSymbol(data: any): data is symbol {
     return getDataType(data) === 'Symbol';
   },
-  isNull(data) {
+  isNull(data: any): data is null {
     return getDataType(data) === 'Null';
   },
-  isUndefined(data) {
+  isUndefined(data: any): data is undefined {
     return getDataType(data) === 'Undefined';
   },
-  isArray(data) {
+  isArray(data: any): data is any[] {
     return getDataType(data) === 'Array';
   },
-  isObject(data) {
+  isObject(data: any): data is object {
     return getDataType(data) === 'Object';
   },
-  isFunction(data) {
+  isFunction(data: any): data is (...args: any[]) => any {
     return getDataType(data) === 'Function';
   },
-  isSet(data) {
+  isSet(data: any): data is object {
     return getDataType(data) === 'Set';
   },
-  isMap(data) {
+  isMap(data: any): data is object {
     return getDataType(data) === 'Map';
   },
 };

@@ -31,3 +31,5 @@ export const initI18n = () => {
   i18n.global.messages[LANGUAGE.zhcn] = deepObjectAssign(zhL, getConfigLanguages()?.[LANGUAGE.zhcn] || {});
   i18n.global.messages[LANGUAGE.enus] = deepObjectAssign(enL, getConfigLanguages()?.[LANGUAGE.enus] || {});
 };
+
+export const $t = i18n.global.t;

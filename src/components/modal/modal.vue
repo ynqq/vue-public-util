@@ -18,9 +18,11 @@
   };
 
   const init = useLoading(async (str: string) => {
-    await sleep(10000);
+    await sleep(100000);
     console.log(str);
+    return str;
   }).setContainer(boxRef);
+  // .setMsg(h('div', {}, ['asd']));
   onMounted(() => {
     init('');
   });
