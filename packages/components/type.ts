@@ -1,4 +1,4 @@
-import { ButtonProps, DialogProps } from 'element-plus';
+import { ButtonProps } from 'element-plus';
 import { DefineComponent } from 'vue';
 export interface IPublicButtonProps {
   duration?: number;
@@ -21,6 +21,7 @@ export interface IPLContainerProvide {
     options: Partial<IPLContainerValues>
   ) => Promise<D>;
 }
+export type TPLContainerTrigger = <TRD = any>(type: 'confirm' | 'cancel', data: TRD) => TRD;
 export type ModalDoneFun = (cancel?: boolean) => void;
 export interface IPLContainerProps {
   childFun: (options: IPLContainerValues) => any;
@@ -78,7 +79,7 @@ export interface IPLContainerProps {
 export interface IPLModalData<D> {
   data: D;
 }
-export type TUseContainer = <P = any, D = any>(
+export type TUseContainer<C> = <P = any, D = any>(
   Com: any,
-  props: Omit<IPLContainerProps & Partial<DialogProps>, 'childFun' | 'onConfirm' | 'onCancel'>
+  props: Omit<IPLContainerProps & Partial<C>, 'childFun' | 'onConfirm' | 'onCancel'>
 ) => (props: P) => Promise<IPLModalData<D>>;

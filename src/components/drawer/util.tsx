@@ -3,7 +3,7 @@
 import Modal from './modal.vue';
 import { Ref, inject } from 'vue';
 import { IPLContainerProvide, TPLContainerTrigger } from '@app/components/type';
-import { usePlModal } from '../../../packages/components/Modal/util';
+import { usePlDrawer } from '../../../packages/components/Drawer/util';
 
 const headerFun = () => {
   return () => {
@@ -16,7 +16,7 @@ const headerFun = () => {
           type="primary"
           onClick={async () => {
             const data = await triggerChildEvent!<{}, typeof Modal>('confirm', { isCancel: true });
-            triggerEmit!('confirm', data);
+            console.log(data);
           }}
         >
           触发子组件confirm
@@ -24,7 +24,8 @@ const headerFun = () => {
         <pl-button
           type="danger"
           onClick={async () => {
-            close && close();
+            close && (await close());
+            triggerEmit('cancel');
           }}
         >
           关闭
@@ -60,19 +61,20 @@ const footerFun = () => {
   };
 };
 
-export const showAddModal = usePlModal(Modal, {
+export const showAddDrawer = usePlDrawer(Modal, {
   title: 'asd',
   // confirmText: '等等',
   // cancelText: '关闭',
-  width: '1000px',
-  cancelProps: {
-    type: 'danger',
-  },
-  confirmProps: {
-    type: 'danger',
-  },
+  direction: 'btt',
+  size: '100%',
+  // cancelProps: {
+  //   type: 'danger',
+  // },
+  // confirmProps: {
+  //   type: 'danger',
+  // },
   cancelHasEvent: true,
-  header: headerFun,
+  // header: headerFun,
   showClose: false,
   closeOnClickModal: true,
   closeOnPressEscape: true,

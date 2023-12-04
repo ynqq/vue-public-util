@@ -1,5 +1,5 @@
 <template>
-  <ElDialog
+  <ElDrawer
     v-bind="otherAttrs"
     v-model="visible"
     :title="hideHeader ? undefined : title"
@@ -23,19 +23,20 @@
       </template>
       <FooterCom v-else />
     </template>
-  </ElDialog>
+  </ElDrawer>
 </template>
 
 <script setup lang="ts">
-  import { ElDialog } from 'element-plus';
+  import { ElDrawer } from 'element-plus';
   import { IPLContainerProps, IPLContainerProvide, IPLContainerValues, ModalDoneFun, TPLContainerTrigger } from '@app/components/type';
   import VuePublicButton from '@app/components/Button/index.vue';
   import { sleep } from '@app/utils';
   import { ref, onMounted, nextTick, useAttrs, provide, inject, Ref } from 'vue';
 
   defineOptions({
-    name: 'PlModal',
+    name: 'PlDrawer',
   });
+
   const emit = defineEmits<{
     confirm: [any];
     cancel: [];

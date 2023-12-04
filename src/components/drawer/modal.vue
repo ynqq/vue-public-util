@@ -18,7 +18,7 @@
   };
 
   const init = useLoading(async (str: string) => {
-    await sleep(1000);
+    await sleep(3000);
     console.log(str);
     return str;
   }).setContainer(boxRef);

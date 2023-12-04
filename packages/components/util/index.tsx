@@ -3,7 +3,7 @@ import { TUseContainer } from '../type';
 import { getPlugins } from '@app/utils/plugin';
 import { install } from '@app/index';
 
-export const genAppContainer = (ModalCom: any): TUseContainer => {
+export function genAppContainer<C>(ModalCom: any): TUseContainer<C> {
   return (Com, modalProps) => {
     return props => {
       return new Promise((resolve, reject) => {
@@ -48,4 +48,4 @@ export const genAppContainer = (ModalCom: any): TUseContainer => {
       });
     };
   };
-};
+}
