@@ -5,6 +5,7 @@
 </template>
 
 <script setup lang="ts">
+  import { PlButton } from '@app/index';
   import { sleep } from '@app/utils/index';
 
   const handleClick = async (e: Event, str: string) => {

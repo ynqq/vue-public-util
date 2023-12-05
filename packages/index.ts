@@ -25,7 +25,7 @@ export * from './types';
 export * from './utils';
 declare module 'vue' {
   export interface GlobalComponents {
-    PlButton: typeof import('element-plus/es/components/button/index')['default'] & typeof import('./components/Button/index.vue')['default'];
+    PlButton: typeof import('./components/Button/index.vue')['default'];
   }
 }
 

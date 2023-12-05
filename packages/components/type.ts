@@ -1,9 +1,11 @@
 import { ButtonProps } from 'element-plus';
 import { DefineComponent } from 'vue';
-export interface IPublicButtonProps {
+export interface IPublicButtonProps extends Partial<ButtonProps> {
   duration?: number;
   showLoadingStatus?: boolean;
   btnClass?: string[];
+  onClick?: (...args: any[]) => any;
+  class?: any;
 }
 export interface IPLContainerValues {
   isConfirm: boolean;

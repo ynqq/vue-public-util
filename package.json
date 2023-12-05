@@ -1,12 +1,13 @@
 {
   "name": "vue-public-util",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": {
     "name": "ynqq"
   },
   "files": [
     "/dist"
   ],
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/ynqq/vue-public-util"

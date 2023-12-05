@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
   import { ElButton } from 'element-plus';
-  import { useAttrs, ref } from 'vue';
+  import { ref } from 'vue';
   import { IPublicButtonProps } from '@app/components/type';
 
   defineOptions({
@@ -21,8 +21,7 @@
     showLoadingStatus: true,
   });
 
-  const { onClick, class: spanClass, ...otherAttrs } = useAttrs();
-  const { duration, showLoadingStatus, btnClass } = props;
+  const { onClick, class: spanClass, duration, showLoadingStatus, btnClass, ...otherAttrs } = props;
 
   const loading = ref(false);
   let handling = false;
@@ -30,7 +29,7 @@
     e.stopImmediatePropagation();
   };
   const handleClick = async (e: Event) => {
-    if (handling) {
+    if (handling || loading.value) {
       return;
     }
     handling = true;
@@ -48,7 +47,7 @@
     if (showLoadingStatus) {
       setTimeout(() => {
         loading.value = false;
-      }, Math.max(duration - nowTime, 0));
+      }, Math.max(duration - (Date.now() - nowTime), 0));
     }
     e.stopPropagation();
     e.preventDefault();
