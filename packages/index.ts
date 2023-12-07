@@ -4,6 +4,9 @@ import { IConfigOptions } from './types';
 import { setConfig } from './utils/config';
 import { initI18n } from './locales';
 export { default as PlButton } from './components/Button/index.vue';
+export * from './components/Drawer/util';
+export * from './components/Modal/util';
+export * from './components/type';
 import './assets/scss/style.scss';
 
 const init = () => {

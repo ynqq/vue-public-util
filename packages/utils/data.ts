@@ -38,6 +38,27 @@ export const DataUtil = {
   isMap(data: any): data is object {
     return getDataType(data) === 'Map';
   },
+  isNaN(data: any): data is number {
+    return data !== data;
+  },
+  /**
+   * 判断数据是否是合法数据
+   * 数据不是 null undefined '' NaN
+   * @param data any
+   * @returns boolean
+   */
+  isDef(data: any) {
+    return !this.isNull(data) && !this.isUndefined(data) && data !== '' && !this.isNaN(data);
+  },
+  /**
+   * 判断数据是否是非法数据
+   * 数据是 null || undefined || '' || NaN
+   * @param data any
+   * @returns boolean
+   */
+  isNDef(data: any) {
+    return !this.isDef(data);
+  },
 };
 
 export const deepObjectAssign = <T extends Record<string, any> = {}>(obj1: T, obj2: Partial<T>) => {

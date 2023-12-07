@@ -6,3 +6,4 @@
 * usePlDrawer
 * usePlModal
 * useLoading
+* useFetchOnce
