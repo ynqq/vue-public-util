@@ -49,6 +49,19 @@ const createLoading = (parentEl: Ref<HTMLDivElement>, msg: string | VNode) => {
   return parent;
 };
 
+/**
+ * 函数执行时增加loading
+ * @param fun 业务函数
+ * @return fun {@link IPLModalData}
+ * @example
+ * ```ts
+ * const drawerRef = ref<HTMLDivElement>()
+ * const submitAction = useLoading(async () => {})
+ * submitAction.setContainer(drawerRef).setMsg('正在保存中,请稍后...')
+ * ...
+ * const submit = async () => { await submitAction() }
+ * ```
+ */
 export const useLoading: TUseLoading = (fun => {
   let parentEl: Ref<HTMLDivElement>;
   let loadingEl: HTMLDivElement;

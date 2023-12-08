@@ -1,10 +1,11 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import VuePublicUtil from '../';
-// import VuePublicUtil from '@app/index';
+// import VuePublicUtil from '../';
+import VuePublicUtil from '@app/index';
 import 'element-plus/dist/index.css';
 import '../dist/style.css';
 import ElementPlus from 'element-plus';
+console.log(VuePublicUtil);
 
 const app = createApp(App);
 app

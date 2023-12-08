@@ -3,6 +3,7 @@
 import Modal from './modal.vue';
 import { Ref, inject } from 'vue';
 import { IPLContainerProvide, TPLContainerTrigger } from '@app/components/type';
+// import { usePlModal } from '../../../';
 import { usePlModal } from '../../../packages/components/Modal/util';
 
 const headerFun = () => {
@@ -15,8 +16,9 @@ const headerFun = () => {
         <pl-button
           type="primary"
           onClick={async () => {
-            const data = await triggerChildEvent!<{}, typeof Modal>('confirm', { isCancel: true });
-            triggerEmit!('confirm', data);
+            // const data = await triggerChildEvent!<{}, typeof Modal>('confirm', { isCancel: true });
+            await close();
+            triggerEmit!('cancel');
           }}
         >
           触发子组件confirm

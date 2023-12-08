@@ -22,6 +22,7 @@ export const install = (app: App, options?: Partial<IConfigOptions>) => {
 
 export default {
   install: install,
+  ver: __APP_VERSION__,
 };
 
 export * from './types';

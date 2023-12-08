@@ -1,3 +1,5 @@
+import { CANCEL_ERROR } from '@app/enums';
+
 export * from './router';
 export * from './plugin';
 export * from './data';
@@ -16,3 +18,9 @@ export function sleep(time: number): Promise<void> {
     }, time);
   });
 }
+
+window.addEventListener('unhandledrejection', e => {
+  if (e.reason === CANCEL_ERROR) {
+    e.preventDefault();
+  }
+});

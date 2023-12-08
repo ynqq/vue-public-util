@@ -1,7 +1,14 @@
 import { onUnmounted } from 'vue';
 
 interface IUseFetchOnceOptions {
+  /**
+   * 名称 必填 用来区分组件
+   */
   name: string;
+  /**
+   * 请求函数
+   * @returns
+   */
   query: (...args: any[]) => any;
 }
 interface IUseFetchOnceQueryData {
@@ -11,6 +18,13 @@ interface IUseFetchOnceQueryData {
   failData?: any;
 }
 const queryData: Record<string, IUseFetchOnceQueryData> = {};
+/**
+ * 只请求一次接口
+ * @description 例如： 下拉框需要请求接口。该下拉框需要循环创建。同一次创建只会请求一次接口
+ * @param options {@link IUseFetchOnceOptions}
+ * @returns fetch: (options.query.options) => Promise<options.query.result> 调用本方法执行请求
+ * @returns reset: () => void 重置该组件状态
+ */
 export const useFetchOnce = (options: IUseFetchOnceOptions) => {
   const { name, query } = options;
   const runAll = () => {

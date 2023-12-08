@@ -1,7 +1,7 @@
 <template>
   <div>
     <Btn />
-    <pl-button type="primary" @click="handleShowModal">显示Modal</pl-button>
+    <div type="primary" @click="handleShowModal">显示Modal</div>
     <pl-button type="primary" @click="handleShowDrawer">显示Drawer</pl-button>
   </div>
 </template>
@@ -12,12 +12,8 @@
   import { showAddDrawer } from './components/drawer/util';
 
   const handleShowModal = async () => {
-    try {
-      const ops = await showAddModal({});
-      console.log(ops);
-    } catch (error) {
-      console.log(error);
-    }
+    const ops = await showAddModal({});
+    console.log(ops);
   };
   const handleShowDrawer = async () => {
     try {

@@ -2,6 +2,7 @@ import { createApp, ref } from 'vue';
 import { TUseContainer } from '../type';
 import { getPlugins } from '@app/utils/plugin';
 import { install } from '@app/index';
+import { CANCEL_ERROR } from '@app/enums';
 
 export function genAppContainer<C>(ModalCom: any): TUseContainer<C> {
   return (Com, modalProps) => {
@@ -23,8 +24,8 @@ export function genAppContainer<C>(ModalCom: any): TUseContainer<C> {
                   onConfirm={(data: any) => {
                     resolve({ data });
                   }}
-                  onCancel={(data: any) => {
-                    reject(data);
+                  onCancel={() => {
+                    reject(CANCEL_ERROR);
                   }}
                 >
                   <Com ref={childRef} {...props} />

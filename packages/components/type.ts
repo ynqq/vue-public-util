@@ -1,19 +1,67 @@
 import { ButtonProps } from 'element-plus';
 import { DefineComponent } from 'vue';
+/**
+ * 按钮props
+ */
 export interface IPublicButtonProps extends Partial<ButtonProps> {
+  /**
+   * 点击按钮之后最少等待时间
+   * @default 500ms
+   */
   duration?: number;
+  /**
+   * 点击按钮时是否显示loading状态
+   * @default true
+   */
   showLoadingStatus?: boolean;
+  /**
+   * 按钮class
+   * @default []
+   */
   btnClass?: string[];
+  /**
+   *
+   * 按钮点击事件
+   */
   onClick?: (...args: any[]) => any;
+  /**
+   * class 会赋给外层的span元素
+   */
   class?: any;
 }
+/**
+ * 模态/抽屉执行子组件confirm事件时传入的参数类型
+ */
 export interface IPLContainerValues {
+  /**
+   * 是否点击的是确认按钮
+   */
   isConfirm: boolean;
+  /**
+   * 是否点击的是取消按钮
+   */
   isCancel: boolean;
+  /**
+   * 关闭模态/抽屉的方法
+   * @returns void
+   */
   close: () => Promise<void>;
 }
+/**
+ * 模态/抽屉provide属性
+ */
 export interface IPLContainerProvide {
+  /**
+   * 关闭模态/抽屉的方法
+   * @returns void
+   */
   close: () => Promise<void>;
+  /**
+   * 触发子组件的emit事件
+   * @param funName emit名称
+   * @param options {@link IPLContainerValues}
+   * @returns Promise<D>
+   */
   triggerChildEvent: <
     D,
     C extends abstract new (...args: any) => any = DefineComponent<any>,
@@ -23,6 +71,9 @@ export interface IPLContainerProvide {
     options: Partial<IPLContainerValues>
   ) => Promise<D>;
 }
+/**
+ * 触发模态/抽屉emit的方法
+ */
 export type TPLContainerTrigger = <TRD = any>(type: 'confirm' | 'cancel', data: TRD) => TRD;
 export type ModalDoneFun = (cancel?: boolean) => void;
 export interface IPLContainerProps {
