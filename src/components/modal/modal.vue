@@ -6,7 +6,7 @@
   import { IPLContainerValues } from '@app/components/type';
   import { sleep } from '@app/utils/index';
   import { useLoading } from '../../../packages/utils/loading/index';
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, onUnmounted } from 'vue';
 
   const boxRef = ref();
 
@@ -25,6 +25,9 @@
   // .setMsg(h('div', {}, ['asd']));
   onMounted(() => {
     init('');
+  });
+  onUnmounted(() =>{
+    console.log('??un');
   });
   defineExpose({
     confirm,

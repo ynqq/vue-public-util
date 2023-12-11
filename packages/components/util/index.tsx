@@ -1,7 +1,7 @@
 import { createApp, ref } from 'vue';
 import { TUseContainer } from '../type';
 import { getPlugins } from '@app/utils/plugin';
-import { install } from '@app/index';
+import { install, sleep } from '@app/index';
 import { CANCEL_ERROR } from '@app/enums';
 
 export function genAppContainer<C>(ModalCom: any): TUseContainer<C> {
@@ -10,6 +10,15 @@ export function genAppContainer<C>(ModalCom: any): TUseContainer<C> {
       return new Promise((resolve, reject) => {
         try {
           const childRef = ref();
+          const destroy = async () => {
+            try {
+              await sleep(400);
+              app.unmount();
+              parent.remove();
+            } catch (error) {
+              //
+            }
+          };
           const app = createApp({
             provide: {
               childRef,
@@ -23,9 +32,11 @@ export function genAppContainer<C>(ModalCom: any): TUseContainer<C> {
                   }}
                   onConfirm={(data: any) => {
                     resolve({ data });
+                    destroy();
                   }}
                   onCancel={() => {
                     reject(CANCEL_ERROR);
+                    destroy();
                   }}
                 >
                   <Com ref={childRef} {...props} />
