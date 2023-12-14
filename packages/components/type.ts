@@ -137,7 +137,12 @@ export interface IPLContainerProps {
 export interface IPLModalData<D> {
   data: D;
 }
+export interface TUseContainerFun<P, D> {
+  (props: P): Promise<IPLModalData<D>>;
+  show: () => void;
+  hasCurrent: () => boolean;
+}
 export type TUseContainer<C> = <P = any, D = any>(
   Com: any,
   props: Omit<IPLContainerProps & Partial<C>, 'childFun' | 'onConfirm' | 'onCancel'>
-) => (props: P) => Promise<IPLModalData<D>>;
+) => TUseContainerFun<P, D>;

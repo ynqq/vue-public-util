@@ -1,17 +1,21 @@
 import { createApp, ref } from 'vue';
-import { TUseContainer } from '../type';
+import { TUseContainer, TUseContainerFun } from '../type';
 import { getPlugins } from '@app/utils/plugin';
 import { install, sleep } from '@app/index';
 import { CANCEL_ERROR } from '@app/enums';
 
 export function genAppContainer<C>(ModalCom: any): TUseContainer<C> {
   return (Com, modalProps) => {
-    return props => {
+    let current: any;
+    const currentFun: TUseContainerFun<any, any> = (props: any) => {
       return new Promise((resolve, reject) => {
         try {
           const childRef = ref();
+          const containerRef = ref();
+          current = containerRef;
           const destroy = async () => {
             try {
+              current = null;
               await sleep(400);
               app.unmount();
               parent.remove();
@@ -26,6 +30,7 @@ export function genAppContainer<C>(ModalCom: any): TUseContainer<C> {
             render() {
               return (
                 <ModalCom
+                  ref={containerRef}
                   {...modalProps}
                   childFun={async (...args: any[]) => {
                     return await childRef.value.confirm(...args);
@@ -59,5 +64,14 @@ export function genAppContainer<C>(ModalCom: any): TUseContainer<C> {
         }
       });
     };
+    currentFun.show = function () {
+      if (this.hasCurrent()) {
+        current.value.show();
+      }
+    };
+    currentFun.hasCurrent = () => {
+      return current ? !!current.value : false;
+    };
+    return currentFun;
   };
 }

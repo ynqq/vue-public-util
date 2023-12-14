@@ -19,7 +19,7 @@ const headerFun = () => {
           onClick={async () => {
             // const data = await triggerChildEvent!<{}, typeof Modal>('confirm', { isCancel: true });
             await close();
-            triggerEmit!('cancel');
+            triggerEmit!('cancel', { a: false });
           }}
         >
           触发子组件confirm
@@ -28,9 +28,6 @@ const headerFun = () => {
           type="danger"
           onClick={async () => {
             close && close();
-            setTimeout(() => {
-              show && show();
-            }, 2000);
           }}
         >
           关闭
@@ -74,7 +71,7 @@ const footerFun = () => {
   };
 };
 
-export const showAddModal = usePlModal(Modal, {
+export const showAddModal = usePlModal<{ num: number }, { data: number }>(Modal, {
   title: 'asd',
   // confirmText: '等等',
   // cancelText: '关闭',
@@ -90,7 +87,7 @@ export const showAddModal = usePlModal(Modal, {
   showClose: false,
   closeOnClickModal: true,
   closeOnPressEscape: true,
-  // footer: footerFun,
-  // hideFooter: true,
+  footer: footerFun,
+  hideFooter: true,
   // hideHeader: true,
 });

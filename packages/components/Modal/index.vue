@@ -158,6 +158,9 @@
   provide('close', close);
   provide('triggerEmit', triggerEmit);
   provide('triggerChildEvent', triggerChildEvent);
+  defineExpose({
+    show,
+  });
 </script>
 
 <style scoped lang="scss">
