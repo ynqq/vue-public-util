@@ -8,6 +8,7 @@ import { usePlModal } from '../../../packages/components/Modal/util';
 
 const headerFun = () => {
   return () => {
+    const show = inject<IPLContainerProvide['show']>('show');
     const close = inject<IPLContainerProvide['close']>('close');
     const triggerChildEvent = inject<IPLContainerProvide['triggerChildEvent']>('triggerChildEvent');
     const triggerEmit = inject<TPLContainerTrigger>('triggerEmit');
@@ -27,9 +28,20 @@ const headerFun = () => {
           type="danger"
           onClick={async () => {
             close && close();
+            setTimeout(() => {
+              show && show();
+            }, 2000);
           }}
         >
           关闭
+        </pl-button>
+        <pl-button
+          type="danger"
+          onClick={async () => {
+            show && show();
+          }}
+        >
+          显示
         </pl-button>
       </div>
     );

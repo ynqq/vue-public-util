@@ -1,5 +1,8 @@
 <template>
-  <div ref="boxRef" class="box">asd</div>
+  <div ref="boxRef" class="box">
+    asd
+    <el-input v-model="val"></el-input>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -9,6 +12,7 @@
   import { ref, onMounted, onUnmounted } from 'vue';
 
   const boxRef = ref();
+  const val = ref('base');
 
   const confirm = async (options: IPLContainerValues) => {
     console.log(options);
@@ -26,7 +30,7 @@
   onMounted(() => {
     init('');
   });
-  onUnmounted(() =>{
+  onUnmounted(() => {
     console.log('??un');
   });
   defineExpose({

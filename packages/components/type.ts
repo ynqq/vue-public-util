@@ -52,6 +52,11 @@ export interface IPLContainerValues {
  */
 export interface IPLContainerProvide {
   /**
+   * 显示模态/抽屉的方法
+   * @returns void
+   */
+  show: () => Promise<void>;
+  /**
    * 关闭模态/抽屉的方法
    * @returns void
    */

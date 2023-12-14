@@ -86,6 +86,9 @@
     await sleep(300);
     isCloseEvent = false;
   };
+  const show: IPLContainerProvide['show'] = async () => {
+    visible.value = true;
+  };
   const getChildOptions = (options: Partial<IPLContainerValues>) => {
     return {
       close,
@@ -151,6 +154,7 @@
     }
     return data;
   };
+  provide('show', show);
   provide('close', close);
   provide('triggerEmit', triggerEmit);
   provide('triggerChildEvent', triggerChildEvent);
