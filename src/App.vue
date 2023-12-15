@@ -4,6 +4,7 @@
     <div type="primary" @click="handleShowModal">显示Modal</div>
     <div type="primary" @click="handleShowModal2">显示Modal2</div>
     <pl-button type="primary" @click="handleShowDrawer">显示Drawer</pl-button>
+    <Demo />
   </div>
 </template>
 
@@ -11,6 +12,31 @@
   import Btn from './components/btn.vue';
   import { showAddModal } from './components/modal/util';
   import { showAddDrawer } from './components/drawer/util';
+  import Demo from './demo';
+  import { ref } from 'vue';
+
+  const tableData = ref([
+    {
+      date: '2016-05-03',
+      name: 'Tom',
+      address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+      date: '2016-05-02',
+      name: 'Tom',
+      address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+      date: '2016-05-04',
+      name: 'Tom',
+      address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+      date: '2016-05-01',
+      name: 'Tom',
+      address: 'No. 189, Grove St, Los Angeles',
+    },
+  ]);
 
   const handleShowModal = async () => {
     try {
@@ -26,12 +52,10 @@
     }
   };
   const handleShowDrawer = async () => {
-    try {
-      const ops = await showAddDrawer({});
-      console.log(ops);
-    } catch (error) {
-      console.log(error);
-    }
+    tableData.value[0].name = Math.random() + '';
+  };
+  const showInfo = row => {
+    console.log(row);
   };
 </script>
 
