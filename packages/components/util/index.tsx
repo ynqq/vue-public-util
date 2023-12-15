@@ -1,7 +1,7 @@
 import { createApp, ref } from 'vue';
 import { TUseContainer, TUseContainerFun } from '../type';
 import { getPlugins } from '@app/utils/plugin';
-import { install, sleep } from '@app/index';
+import { DataUtil, install, sleep } from '@app/index';
 import { CANCEL_ERROR } from '@app/enums';
 
 export function genAppContainer<C>(ModalCom: any): TUseContainer<C> {
@@ -39,8 +39,8 @@ export function genAppContainer<C>(ModalCom: any): TUseContainer<C> {
                     resolve({ data });
                     destroy();
                   }}
-                  onCancel={() => {
-                    reject(CANCEL_ERROR);
+                  onCancel={(error: any) => {
+                    reject(DataUtil.isUndefined(error) ? CANCEL_ERROR : error);
                     destroy();
                   }}
                 >
