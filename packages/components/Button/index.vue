@@ -21,7 +21,7 @@
     showLoadingStatus: true,
   });
 
-  const { onClick, class: spanClass, duration, showLoadingStatus, btnClass, ...otherAttrs } = props;
+  const { onClick: _onClick, class: spanClass, duration, showLoadingStatus, btnClass, ...otherAttrs } = props;
 
   const loading = ref(false);
   let handling = false;
@@ -38,7 +38,7 @@
       loading.value = true;
     }
     try {
-      onClick && (await (onClick as Function)(e));
+      props.onClick && (await (props.onClick as Function)(e));
     } catch (error) {
       //
     } finally {

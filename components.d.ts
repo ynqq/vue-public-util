@@ -9,8 +9,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     Btn: typeof import('./src/components/btn.vue')['default']
     ElInput: typeof import('element-plus/es')['ElInput']
-    ElTable: typeof import('element-plus/es')['ElTable']
-    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     Modal: typeof import('./src/components/drawer/modal.vue')['default']
   }
 }

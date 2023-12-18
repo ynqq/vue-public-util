@@ -27,7 +27,7 @@ export default defineComponent({
     const handleShowDrawer = async () => {
       tableData.value[0].name = Math.random() + '';
     };
-    const showInfo = row => {
+    const showInfo = (row: any) => {
       console.log(row);
     };
     return () => (
@@ -40,7 +40,7 @@ export default defineComponent({
           <el-table-column prop="name" label="Name" width="180" />
           <el-table-column prop="address" label="Address">
             {{
-              default: ({ row }) => (
+              default: ({ row }: any) => (
                 <pl-button
                   type="primary"
                   onClick={() => {

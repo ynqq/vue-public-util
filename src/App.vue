@@ -11,7 +11,6 @@
 <script setup lang="ts">
   import Btn from './components/btn.vue';
   import { showAddModal } from './components/modal/util';
-  import { showAddDrawer } from './components/drawer/util';
   import Demo from './demo';
   import { ref } from 'vue';
 
@@ -53,9 +52,6 @@
   };
   const handleShowDrawer = async () => {
     tableData.value[0].name = Math.random() + '';
-  };
-  const showInfo = row => {
-    console.log(row);
   };
 </script>
 
