@@ -5,6 +5,7 @@ export * from './plugin';
 export * from './data';
 export * from './loading';
 export * from './fetch';
+export * from './action';
 /**
  * 等待一段时间
  * @param time 等待时间

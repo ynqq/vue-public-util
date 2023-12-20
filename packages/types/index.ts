@@ -52,3 +52,20 @@ interface IUseFun<F extends (...args: any[]) => any, D = ReturnType<F>, R = D ex
  * @return fun {@link IUseFun}
  */
 export type TUseLoading = <F extends (...args: any[]) => any>(fun: F) => IUseFun<F>;
+export type ValueOf<T> = T[keyof T];
+export enum EActionEnum {
+  'isCreate' = '1',
+  'isUpdate' = '2',
+  'isCopy' = '3',
+  'isView' = '4',
+}
+export type TOtherAction = '5' | '6' | '7' | '8' | '9' | '10';
+export type TActionConfig = Record<string, TOtherAction>;
+export type TActionValue<K extends string | number | symbol> = {
+  [k in K]: boolean;
+} & {
+  isCreate: boolean;
+  isUpdate: boolean;
+  isCopy: boolean;
+  isView: boolean;
+};

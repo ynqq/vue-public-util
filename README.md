@@ -80,7 +80,26 @@ app.use(VPU)
     };
     ```
 
+- useAction
+  - 用来判断当前页面/组件的操作类型
+  - 内置 4 种类型：
+    ```ts
+    export enum EActionEnum {
+      'isCreate' = '1',
+      'isUpdate' = '2',
+      'isCopy' = '3',
+      'isView' = '4',
+    }
+    export type TOtherAction = '5' | '6' | '7' | '8' | '9' | '10';
+    ```
+    ```ts
+      const { isCreate, isDelete } = useAction(action.value, {isDelete: '5'})
+    ```
+
 ### 更新日志
+
+- 2023/12/20 1.2.7
+  - A 增加useAction
 
 - 2023/12/14
   - A 增加显示模态/抽屉事件

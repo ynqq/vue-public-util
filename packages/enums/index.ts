@@ -1,4 +1,4 @@
-import type { ValueOf } from 'element-plus/es/components/table/src/table-column/defaults.mjs';
+import { ValueOf } from '..';
 
 export const LANGUAGE = {
   zhcn: 'zh-cn',
