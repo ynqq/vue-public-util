@@ -69,3 +69,15 @@ export type TActionValue<K extends string | number | symbol> = {
   isCopy: boolean;
   isView: boolean;
 };
+
+export type TDeepObjAssignValue<T, D, K extends string | number | symbol = keyof T | keyof D> = {
+  [k in K]: k extends keyof D // 2 有没有
+    ? k extends keyof T // 两个都有吗
+      ? D[k] extends Record<string, any> // 值是对象? 需要和1合并属性
+        ? TDeepObjAssignValue<T[k], D[k]>
+        : D[k]
+      : D[k] // 只有2有 取新值
+    : k extends keyof T // 只有1有
+    ? T[k]
+    : never;
+};

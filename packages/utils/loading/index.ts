@@ -69,7 +69,7 @@ export const useLoading: TUseLoading = (fun => {
   const result = async (...args: any[]) => {
     loadingEl = createLoading(parentEl, loadingMessage);
     try {
-      const data = await fun(args);
+      const data = await fun(...args);
       return data;
     } finally {
       loadingEl.remove();

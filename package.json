@@ -28,7 +28,9 @@
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "publish": "npm run build && npm publish",
-    "test": "vitest"
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "typecheck:vitest": "vue-tsc -p tsconfig.vitest.json --composite false --noEmit"
   },
   "peerDependencies": {
     "element-plus": ">=2",

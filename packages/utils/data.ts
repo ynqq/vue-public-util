@@ -1,3 +1,5 @@
+import { TDeepObjAssignValue } from '@app/types';
+
 type TDataType = 'Number' | 'String' | 'Boolean' | 'Symbol' | 'Null' | 'Undefined' | 'Array' | 'Object' | 'Function' | 'Set' | 'Map';
 // type TFormatType<T extends TDataType = TDataType> = `is${Capitalize<T>}`;
 export const getDataType = (data: any): TDataType => {
@@ -61,7 +63,10 @@ export const DataUtil = {
   },
 };
 
-export const deepObjectAssign = <T extends Record<string, any> = {}>(obj1: T, obj2: Partial<T>) => {
+export const deepObjectAssign = <T extends Record<string, any> = {}, D extends Record<string, any> = {}>(
+  obj1: T,
+  obj2: D
+): TDeepObjAssignValue<T, D> => {
   for (const i in obj2) {
     const data = obj2[i];
     if (DataUtil.isObject(data)) {
@@ -70,5 +75,5 @@ export const deepObjectAssign = <T extends Record<string, any> = {}>(obj1: T, ob
       obj1[i] = data!;
     }
   }
-  return obj1;
+  return obj1 as TDeepObjAssignValue<T, D>;
 };

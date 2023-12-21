@@ -93,13 +93,71 @@ app.use(VPU)
     export type TOtherAction = '5' | '6' | '7' | '8' | '9' | '10';
     ```
     ```ts
-      const { isCreate, isDelete } = useAction(action.value, {isDelete: '5'})
+    const { isCreate, isDelete } = useAction(action.value, { isDelete: '5' });
+    ```
+- DataUtil
+  - 判断数据类型
+  ```ts
+  type TDataType = 'Number' | 'String' | 'Boolean' | 'Symbol' | 'Null' | 'Undefined' | 'Array' | 'Object' | 'Function' | 'Set' | 'Map';
+  DataUtil.is[TDataType](val);
+  // 例如
+  DataUtil.isNumber(val);
+  /**
+   * 判断数据是否是合法数据
+   * 数据不是 null undefined '' NaN
+   * @param data any
+   * @returns boolean
+   */
+  DataUtil.isDef();
+  /**
+   * 判断数据是否是非法数据
+   * 数据是 null || undefined || '' || NaN
+   * @param data any
+   * @returns boolean
+   */
+  DataUtil.isNDef();
+  ```
+- deepObjectAssign
+
+  - 深度合并对象
+
+    ```ts
+    const data1 = {
+      name: '张三',
+      age: 12,
+      isBoy: true,
+      address: {
+        province: 'xxx省',
+        city: 'xxx市',
+        area: 'xxx区',
+      },
+    };
+    const data2 = {
+      age: 14,
+      a: { b: { c: { d: { e: 1 } } } },
+      address: {
+        province: 666,
+        longitudeAndLatitude: {
+          lat: 30,
+          lng: 100,
+        },
+      },
+    };
+    const data3 = deepObjectAssign(data1, data2);
+
+    expect(DataUtil.isNumber(data3.address.province)).toBe(true);
+    expect(DataUtil.isNumber(data3.address.longitudeAndLatitude.lng)).toBe(true);
+    expect(DataUtil.isNumber(data3.a.b.c.d.e)).toBe(true);
     ```
 
 ### 更新日志
 
 - 2023/12/20 1.2.7
-  - A 增加useAction
+
+  - A 增加 useAction
+  - A 编写单元测试
+  - U 优化 deepObjectAssign 类型提示
+  - F 修复 useLoading 传参问题
 
 - 2023/12/14
   - A 增加显示模态/抽屉事件
