@@ -1,16 +1,6 @@
+import { IUseFetchOnceOptions } from '@app/types';
 import { onUnmounted } from 'vue';
 
-interface IUseFetchOnceOptions {
-  /**
-   * 名称 必填 用来区分组件
-   */
-  name: string;
-  /**
-   * 请求函数
-   * @returns
-   */
-  query: (...args: any[]) => any;
-}
 interface IUseFetchOnceQueryData {
   pending: null | boolean;
   queue: ((...args: any[]) => any)[];
@@ -25,16 +15,21 @@ const queryData: Record<string, IUseFetchOnceQueryData> = {};
  * @returns fetch: (options.query.options) => Promise<options.query.result> 调用本方法执行请求
  * @returns reset: () => void 重置该组件状态
  */
-export const useFetchOnce = (options: IUseFetchOnceOptions) => {
+export const useFetchOnce = <F extends (...args: any[]) => any, R = ReturnType<F>, FN = (...args: Parameters<F>) => R>(
+  options: IUseFetchOnceOptions<F>
+): {
+  reset: () => void;
+  fetch: FN;
+} => {
   const { name, query } = options;
   const runAll = () => {
     const queryDataItem = queryData[name];
     queryDataItem?.queue?.forEach(fun => {
-      fun && fun(queryDataItem.result);
+      fun && fun(queryDataItem.result as R);
     });
     reset();
   };
-  const fetch = async (...args: any[]) => {
+  const fetch = (async (...args: Parameters<F>) => {
     if (queryData[name]?.result) {
       return queryData[name].result;
     } else {
@@ -61,7 +56,7 @@ export const useFetchOnce = (options: IUseFetchOnceOptions) => {
           }
         }))();
     }
-  };
+  }) as FN;
   const reset = () => {
     delete queryData[name];
   };

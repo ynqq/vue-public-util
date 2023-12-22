@@ -28,8 +28,8 @@ export const initI18n = () => {
   i18n.global.locale = getConfig().locel;
   const zhL = i18n.global.messages[LANGUAGE.zhcn],
     enL = i18n.global.messages[LANGUAGE.enus];
-  i18n.global.messages[LANGUAGE.zhcn] = deepObjectAssign(zhL, getConfigLanguages()?.[LANGUAGE.zhcn] || {});
-  i18n.global.messages[LANGUAGE.enus] = deepObjectAssign(enL, getConfigLanguages()?.[LANGUAGE.enus] || {});
+  (i18n.global.messages[LANGUAGE.zhcn] as any) = deepObjectAssign(zhL, getConfigLanguages()?.[LANGUAGE.zhcn] || {});
+  (i18n.global.messages[LANGUAGE.enus] as any) = deepObjectAssign(enL, getConfigLanguages()?.[LANGUAGE.enus] || {});
 };
 
 export const $t = i18n.global.t;

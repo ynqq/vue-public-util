@@ -157,6 +157,7 @@ app.use(VPU)
   - A 增加 useAction
   - A 编写单元测试
   - U 优化 deepObjectAssign 类型提示
+  - U 优化 useFetchOnce 类型提示
   - F 修复 useLoading 传参问题
 
 - 2023/12/14

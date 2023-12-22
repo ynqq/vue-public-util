@@ -24,9 +24,11 @@ describe('DataUtil 测试', () => {
     expect(DataUtil.isSet(_set)).toBe(true);
     expect(DataUtil.isMap(_map)).toBe(true);
     expect(DataUtil.isNaN(_nan)).toBe(true);
+
     expect(DataUtil.isDef(0)).toBe(true);
     expect(DataUtil.isDef(false)).toBe(true);
     expect(DataUtil.isDef('0')).toBe(true);
+
     expect(DataUtil.isNDef(null)).toBe(true);
     expect(DataUtil.isNDef(undefined)).toBe(true);
     expect(DataUtil.isNDef('')).toBe(true);

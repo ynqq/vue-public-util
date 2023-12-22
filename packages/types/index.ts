@@ -81,3 +81,32 @@ export type TDeepObjAssignValue<T, D, K extends string | number | symbol = keyof
     ? T[k]
     : never;
 };
+
+export interface IUseFetchOnceOptions<F extends (...args: any[]) => any> {
+  /**
+   * 名称 必填 用来区分组件
+   */
+  name: string;
+  /**
+   * 请求函数
+   * @returns
+   */
+  query: F;
+}
+/**
+ * K 必填 其他非必填
+ */
+export type PickRequired<O extends Record<string | number | symbol, any>, K extends keyof O, D = Pick<O, K>, D2 = Omit<O, K>> = {
+  [k in keyof D]-?: D[k];
+} & {
+  [k in keyof D2]?: D2[k];
+};
+
+/**
+ * K非必填 其他必填
+ */
+export type OmitRequired<O extends Record<string | number | symbol, any>, K extends keyof O, D = Pick<O, K>, D2 = Omit<O, K>> = {
+  [k in keyof D]?: D[k];
+} & {
+  [k in keyof D2]-?: D2[k];
+};

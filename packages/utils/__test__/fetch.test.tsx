@@ -1,54 +1,23 @@
 import { mount } from '@vue/test-utils';
-import { describe, it } from 'vitest';
-import { VNode, nextTick, ref } from 'vue';
-import { sleep, useFetchOnce } from '..';
-
-const _mount = (render: () => VNode) => {
-  return mount(render, { attachTo: document.body });
-};
+import { describe, expect, it } from 'vitest';
+import FetchVue from './fetch/select.vue';
+import { nextTick } from 'vue';
 
 describe('useFetchOnce 测试', () => {
   it('字典组件测试', async () => {
-    let num = 0;
-    const fetchAction = async (nums: number) => {
-      await sleep(500);
-      num++;
-      return {
-        code: 1,
-        data: new Array(nums).fill('').map((_, index) => {
-          return { label: '测试' + index, value: 'id' + index };
-        }),
-      };
-    };
-    const wrapper = mount(
-      {
-        setup() {
-          const { fetch } = useFetchOnce({ name: 'comName', query: fetchAction });
-          const list = ref<{ label: string; value: string }[]>([{ label: 'a', value: 'a' }]);
-          const fetchList = async () => {
-            const { data } = await fetch(3);
-            console.log(data, '2222');
+    const wrapper1 = mount(FetchVue, { attachTo: document.body });
+    mount(FetchVue, { attachTo: document.body });
+    mount(FetchVue, { attachTo: document.body });
+    const wrapper4 = mount(FetchVue, { attachTo: document.body });
 
-            list.value = data;
-          };
-          fetchList();
-          return () => (
-            <div>
-              22
-              {list.value.map(item => (
-                <div class={'item'} key={item.value}>
-                  {item.label}
-                </div>
-              ))}
-            </div>
-          );
-        },
-      },
-      { attachTo: document.body }
-    );
+    await wrapper1.vm.next();
     await nextTick();
-    console.log(document.body.innerHTML);
-
-    console.log(wrapper.findAll('.item').length);
+    expect(document.querySelectorAll('.item').length).toBe(3 * 4);
+    expect(wrapper1.vm.getNum()).toBe(1);
+    expect(wrapper4.vm.getNum()).toBe(1);
+    mount(FetchVue, { attachTo: document.body });
+    await wrapper1.vm.next();
+    expect(wrapper1.vm.getNum()).toBe(2);
+    expect(wrapper4.vm.getNum()).toBe(2);
   });
 });
