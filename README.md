@@ -1,5 +1,7 @@
 # vue-public-util
+
 - vue + element-plus 一些工具
+- 需要安装 i18n 插件
 
 ### 安装方式
 
@@ -149,6 +151,167 @@ app.use(VPU)
     expect(DataUtil.isNumber(data3.address.longitudeAndLatitude.lng)).toBe(true);
     expect(DataUtil.isNumber(data3.a.b.c.d.e)).toBe(true);
     ```
+
+### usePlDrawer & usePlModal
+
+- 只需要写具体业务组件，可以在弹窗和抽屉中快速切换
+- async/await 顺序执行，不需要在组件中通过@confirm 执行回调
+
+* 使用方法
+
+  1.  header/footer 不需要自定义
+
+      - 业务组件 modal.vue
+
+      ```vue
+      <template>
+        <div ref="boxRef" class="box">
+          <el-input v-model="val"></el-input>
+        </div>
+      </template>
+      <script setup lang="ts">
+        import { IPLContainerValues } from '@app/components/type';
+        import { sleep } from '@app/utils/index';
+        import { useLoading } from '@app/utils/loading/index';
+        import { ref, onMounted } from 'vue';
+
+        interface CustomAction extends IPLContainerValues {
+          isAgree: boolean;
+          isReject: boolean;
+        }
+
+        const boxRef = ref();
+        const val = ref('base');
+
+        // 执行确定的回调事件 默认是: 确定 取消
+        const confirm = async (options: IPLContainerValues) => {
+          if (options.isConfirm) {
+            // 可以通过options 判断是哪种操作
+          }
+          await sleep(1000);
+          // 需要手动执行close事件来关闭模态
+          await options.close();
+          /**
+           * 返回值可以在外部直接获取到
+           * @example
+           * const ops = await showAddModal({ num: 1 });
+           * console.log(ops.data); // data = { a: 123 }
+           */
+          return { a: 123 };
+        };
+        // 自定义确定的事件类型, 可以在自定义header或footer中使用
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const _confirm2 = async (options: CustomAction) => {
+          if (options.isAgree) {
+            // 可以通过options 判断是哪种操作
+          }
+          await sleep(1000);
+          await options.close();
+          return { a: 123 };
+        };
+
+        const init = useLoading(async (str: string) => {
+          await sleep(1000);
+          return str;
+        }).setContainer(boxRef);
+        onMounted(() => {
+          init('');
+        });
+        // 必须要暴露confirm事件
+        defineExpose({
+          confirm,
+        });
+      </script>
+      ```
+
+  - 工具组件 util.tsx
+
+    ```ts
+    // usePlModal<Props, Response>(ChildCom, options)
+    export const showNormalModal = usePlModal<{ num: number }, { data: number }>(Modal, {
+      title: '标题',
+      width: '800px',
+    });
+    ```
+
+2. 自定义 header/footer
+
+   - 业务组件 modal.vue
+     ```bash
+     相同
+     ```
+   - 工具组件 util.tsx
+
+     ```ts
+     const headerFun = () => {
+       return () => {
+         // 关闭弹窗事件 不会进入inject状态
+         const close = inject<IPLContainerProvide['close']>('close');
+         // 触发业务组件expose的方法
+         const triggerChildEvent = inject<IPLContainerProvide['triggerChildEvent']>('triggerChildEvent');
+         // 触发弹窗组件的emit事件
+         const triggerEmit = inject<TPLContainerTrigger>('triggerEmit');
+
+         // 执行业务组件的confirm事件
+         const triggerEvent = async (options: CustomAction) => {
+           const data = await triggerChildEvent!('confirm', options as any);
+           triggerEmit('confirm', data);
+         };
+
+         const onConfirm = async () => {
+           await triggerEvent({ isConfirm: true });
+         };
+
+         const onCancel = async () => {
+           await close();
+           triggerEmit('cancel', null);
+         };
+
+         const onAgree = async () => {
+           await triggerEvent({ isAgree: true });
+         };
+         const onReject = async () => {
+           await triggerEvent({ isReject: true });
+         };
+
+         return (
+           <div>
+             <pl-button type="primary" onClick={onConfirm}>
+               确定
+             </pl-button>
+             <pl-button type="primary" onClick={onAgree}>
+               同意
+             </pl-button>
+             <pl-button type="primary" onClick={onReject}>
+               驳回
+             </pl-button>
+             <pl-button type="danger" onClick={onCancel}>
+               取消
+             </pl-button>
+           </div>
+         );
+       };
+     };
+
+     const footerFun = () => {
+      <!-- 同 headerFun -->
+     }
+
+     export const showAddModal = usePlModal<{ num: number }, { data: number }>(Modal, {
+       title: 'asd',
+       width: '1000px',
+       header: headerFun,
+       showClose: false,
+       footer: footerFun,
+     });
+     ```
+
+3. 使用
+
+```ts
+const ops = await showAddModal({ num: 1 });
+```
 
 ### 更新日志
 
