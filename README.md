@@ -159,7 +159,7 @@ app.use(VPU)
 
 * 使用方法
 
-  1.  header/footer 不需要自定义
+  1. 不需要自定义header/footer 
 
       - 业务组件 modal.vue
 
