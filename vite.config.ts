@@ -27,12 +27,13 @@ export default defineConfig({
       fileName: format => `${pkg.name}.${format}.js`,
     },
     rollupOptions: {
-      external: ['vue', 'vue-i18n', 'element-plus'],
+      external: ['vue', 'vue-i18n', 'element-plus', 'vue-router'],
       output: {
         globals: {
           vue: 'Vue',
           'vue-i18n': 'VueI18N',
           'element-plus': 'ElementPlus',
+          'vue-router': 'VueRouter',
         },
       },
     },

@@ -92,6 +92,11 @@ export interface IUseFetchOnceOptions<F extends (...args: any[]) => any> {
    * @returns
    */
   query: F;
+  /**
+   * 是否在组件销毁时清除数据缓存
+   * @default false
+   */
+  uninstall?: boolean;
 }
 /**
  * K 必填 其他非必填
