@@ -110,3 +110,25 @@ export type OmitRequired<O extends Record<string | number | symbol, any>, K exte
 } & {
   [k in keyof D2]-?: D2[k];
 };
+
+export interface IUseDeepFnOptions<R> {
+  /**
+   * 循环上限次数
+   * @default 10
+   */
+  limit: number;
+  /**
+   * 间隔时间
+   * @default 300 (ms)
+   */
+  time: number;
+  /**
+   * 验证方法 不传只校验 !!(fun返回值)
+   * @param result fun的返回值
+   * @returns boolean
+   */
+  checker?: (result: R) => boolean;
+}
+export interface IUseDeepFn {
+  <F extends (...args: any[]) => any, R = ReturnType<F>>(fun: F, options?: IUseDeepFnOptions<R>): (...args: Parameters<F>) => Promise<R>;
+}
