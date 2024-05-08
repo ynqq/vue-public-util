@@ -110,3 +110,10 @@ export type OmitRequired<O extends Record<string | number | symbol, any>, K exte
 } & {
   [k in keyof D2]-?: D2[k];
 };
+
+export enum TBucketType {
+  check = 'CHECK',
+  data = 'DATA',
+}
+
+export type TBucket = Map<TBucketType, Map<Symbol, Function>>;

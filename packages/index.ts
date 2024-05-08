@@ -1,6 +1,6 @@
 import { App } from 'vue';
 import VuePublicButton from './components/Button/index.vue';
-import { IConfigOptions } from './types';
+import { IConfigOptions, TBucket } from './types';
 import { setConfig } from './utils/config';
 import { initI18n } from './locales';
 export { default as PlButton } from './components/Button/index.vue';
@@ -16,7 +16,7 @@ const init = () => {
 export const install = (app: App, options?: Partial<IConfigOptions>) => {
   setConfig(options);
   init();
-  app.component(VuePublicButton.name, VuePublicButton);
+  app.component(VuePublicButton.name!, VuePublicButton);
   return app;
 };
 
@@ -30,6 +30,10 @@ export * from './utils';
 declare module 'vue' {
   export interface GlobalComponents {
     PlButton: typeof import('./components/Button/index.vue')['default'];
+  }
+
+  interface ComponentInternalInstance {
+    bucket: TBucket;
   }
 }
 
