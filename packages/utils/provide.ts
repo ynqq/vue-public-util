@@ -1,4 +1,6 @@
-/** * 多层子组件场景时 提交/校验不需要通过ref */
+/**
+ * 多层子组件场景时 提交/校验不需要通过ref
+ */
 import { TBucket, TBucketType } from '@app/types';
 import { ComponentInternalInstance, getCurrentInstance, onBeforeUnmount } from 'vue';
 
