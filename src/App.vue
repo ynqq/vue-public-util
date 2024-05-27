@@ -5,6 +5,9 @@
     <div type="primary" @click="handleShowModal2">显示Modal2</div>
     <pl-button type="primary" @click="handleShowDrawer">显示Drawer</pl-button>
     <Demo />
+    <RouterLink to="/">Home</RouterLink>
+    <RouterLink to="/login">Login</RouterLink>
+    <RouterView></RouterView>
   </div>
 </template>
 

@@ -8,15 +8,17 @@ export * from './components/Drawer/util';
 export * from './components/Modal/util';
 export * from './components/type';
 import './assets/scss/style.scss';
+import { listenRouter } from './utils';
 
 const init = () => {
   initI18n();
+  listenRouter();
 };
 
 export const install = (app: App, options?: Partial<IConfigOptions>) => {
   setConfig(options);
   init();
-  app.component(VuePublicButton.name, VuePublicButton);
+  app.component(VuePublicButton.name!, VuePublicButton);
   return app;
 };
 

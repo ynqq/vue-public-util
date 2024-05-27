@@ -6,6 +6,7 @@ export * from './data';
 export * from './loading';
 export * from './fetch';
 export * from './action';
+export * from './cache';
 export * from './deep';
 /**
  * 等待一段时间

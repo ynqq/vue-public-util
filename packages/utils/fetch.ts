@@ -1,13 +1,7 @@
 import { IUseFetchOnceOptions } from '@app/types';
 import { onUnmounted } from 'vue';
+import { deleteQueryData, getQueryData, getRouterFromPlugins, setQueryData } from '@app/utils/index';
 
-interface IUseFetchOnceQueryData {
-  pending: null | boolean;
-  queue: ((...args: any[]) => any)[];
-  result?: any;
-  failData?: any;
-}
-const queryData: Record<string, IUseFetchOnceQueryData> = {};
 /**
  * 只请求一次接口
  * @description 例如： 下拉框需要请求接口。该下拉框需要循环创建。同一次创建只会请求一次接口
@@ -21,25 +15,29 @@ export const useFetchOnce = <F extends (...args: any[]) => any, R = ReturnType<F
   reset: () => void;
   fetch: FN;
 } => {
-  const { name, query } = options;
+  const { name, query, uninstall } = options;
   const runAll = () => {
-    const queryDataItem = queryData[name];
+    const queryDataItem = getQueryData(name);
     queryDataItem?.queue?.forEach(fun => {
       fun && fun(queryDataItem.result as R);
     });
-    reset();
+    // 没有引入路由插件 还是完事就重置
+    if (!getRouterFromPlugins()) {
+      reset();
+    }
   };
   const fetch = (async (...args: Parameters<F>) => {
-    if (queryData[name]?.result) {
-      return queryData[name].result;
+    const cacheQueryData = getQueryData(name);
+    if (cacheQueryData?.result) {
+      return cacheQueryData.result;
     } else {
-      if (!queryData[name]) {
-        queryData[name] = {
+      let queryDataItem = getQueryData(name)!;
+      if (!cacheQueryData) {
+        queryDataItem = setQueryData(name, {
           pending: null,
           queue: [],
-        };
+        });
       }
-      const queryDataItem = queryData[name];
       return (() =>
         new Promise(async resolve => {
           queryDataItem.queue.push(resolve);
@@ -58,11 +56,11 @@ export const useFetchOnce = <F extends (...args: any[]) => any, R = ReturnType<F
     }
   }) as FN;
   const reset = () => {
-    delete queryData[name];
+    deleteQueryData(name);
   };
 
   onUnmounted(() => {
-    reset();
+    uninstall && reset();
   });
 
   return {
