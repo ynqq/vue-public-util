@@ -1,6 +1,7 @@
 <template>
   <div>
-    <Btn />
+    <ProvideCom />
+    <!-- <Btn />
     <div type="primary" @click="handleShowModal">显示Modal</div>
     <div type="primary" @click="handleShowModal2">显示Modal2</div>
     <pl-button type="primary" @click="handleShowDrawer">显示Drawer</pl-button>
@@ -12,10 +13,15 @@
 </template>
 
 <script setup lang="ts">
+  import { getCurrentInstance } from 'vue';
   import Btn from './components/btn.vue';
   import { showAddModal } from './components/modal/util';
   import Demo from './demo';
   import { ref } from 'vue';
+  import ProvideCom from './components/provideCom/index.vue';
+
+  console.log(getCurrentInstance());
+  (getCurrentInstance() as any).a = 123;
 
   const tableData = ref([
     {
