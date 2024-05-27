@@ -1,7 +1,7 @@
 <template>
   <div>
     <ProvideCom />
-    <!-- <Btn />
+    <Btn />
     <div type="primary" @click="handleShowModal">显示Modal</div>
     <div type="primary" @click="handleShowModal2">显示Modal2</div>
     <pl-button type="primary" @click="handleShowDrawer">显示Drawer</pl-button>
