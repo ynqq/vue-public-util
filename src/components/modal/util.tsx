@@ -1,54 +1,44 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import Modal, { CustomAction } from './modal.vue';
-import { Ref, inject } from 'vue';
-import { IPLContainerProvide, TPLContainerTrigger } from '@app/components/type';
+import { ComponentInternalInstance, Ref, inject } from 'vue';
+import { IPLContainerProvide } from '@app/components/type';
 // import { usePlModal } from '../../../';
 import { usePlModal } from '../../../packages/components/Modal/util';
+import { useOpen } from '@app/utils';
 
-const headerFun = () => {
+const headerFun = (ctx: ComponentInternalInstance) => {
   return () => {
-    // 关闭弹窗事件 不会进入inject状态
-    const close = inject<IPLContainerProvide['close']>('close');
-    // 触发业务组件expose的方法
-    const triggerChildEvent = inject<IPLContainerProvide['triggerChildEvent']>('triggerChildEvent');
-    // 触发弹窗组件的emit事件
-    const triggerEmit = inject<TPLContainerTrigger>('triggerEmit');
+    const { runInstanceExpose, runInstanceClose, getChildExpose } = useOpen(false, ctx);
 
-    // 执行业务组件的confirm事件
-    const triggerEvent = async (options: CustomAction) => {
-      const data = await triggerChildEvent!('confirm', options as any);
-      triggerEmit('confirm', data);
-    };
+    const childExpose = getChildExpose<InstanceType<typeof Modal>>();
 
     const onConfirm = async () => {
-      await triggerEvent({ isConfirm: true });
-    };
-
-    const onCancel = async () => {
-      await close();
-      triggerEmit('cancel', null);
+      await runInstanceExpose<CustomAction>({ isConfirm: true });
     };
 
     const onAgree = async () => {
-      await triggerEvent({ isAgree: true });
+      await runInstanceExpose<CustomAction>({ isAgree: true });
     };
+
     const onReject = async () => {
-      await triggerEvent({ isReject: true });
+      await runInstanceExpose<CustomAction>({ isReject: true });
     };
 
     return (
       <div>
-        <pl-button type="primary" onClick={onConfirm}>
-          确定
-        </pl-button>
+        {childExpose.value.random}
+        {childExpose.value.val === '1' ? (
+          <pl-button type="primary" onClick={onConfirm}>
+            确定
+          </pl-button>
+        ) : null}
         <pl-button type="primary" onClick={onAgree}>
           同意
         </pl-button>
         <pl-button type="primary" onClick={onReject}>
           驳回
         </pl-button>
-        <pl-button type="danger" onClick={onCancel}>
+        <pl-button type="danger" onClick={runInstanceClose}>
           取消
         </pl-button>
       </div>
@@ -64,6 +54,7 @@ const footerFun = () => {
         <pl-button
           type="primary"
           onClick={async () => {
+            // eslint-disable-next-line no-console
             console.log(childRef!.value);
           }}
         >

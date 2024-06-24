@@ -16,7 +16,7 @@
   import { PlButton } from '@app/index';
 
   let num = 0;
-  const { regCheckEffect, regDataEffect, runCheck, runData } = useProvideEffect(true);
+  const { onCheckEffect, onDataEffect, runCheck, runData } = useProvideEffect(true);
 
   const list = ref<DataItem[]>([]);
 
@@ -33,11 +33,11 @@
     list.value.splice(index, 1);
   };
 
-  regCheckEffect(() => {
+  onCheckEffect(() => {
     return runCheck();
   });
 
-  regDataEffect(async () => {
+  onDataEffect(async () => {
     const data = await runData<DataItem>('array');
     return {
       settingData: data,

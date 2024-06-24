@@ -123,6 +123,14 @@ export enum TBucketType {
 
 export type TBucket = Map<TBucketType, Map<Symbol, Function>>;
 
+export enum TOpenBucketType {
+  confirm = 'CONFIRM',
+  close = 'CLOSE',
+  expose = 'EXPOSE',
+}
+
+export type TOpenBucket = Map<TOpenBucketType, Map<Symbol, Function>>;
+
 export interface IUseDeepFnOptions<R> {
   /**
    * 循环上限次数

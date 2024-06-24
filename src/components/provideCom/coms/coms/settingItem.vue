@@ -20,11 +20,11 @@
     data: DataItem;
   }>();
 
-  const { regCheckEffect, regDataEffect } = useProvideEffect();
+  const { onCheckEffect, onDataEffect } = useProvideEffect();
 
   const currentData = ref(props.data);
 
-  regCheckEffect(() => {
+  onCheckEffect(() => {
     if (!currentData.value.width) {
       ElMessage.warning('请输入宽度');
       return false;
@@ -37,7 +37,7 @@
     return true;
   });
 
-  regDataEffect(() => {
+  onDataEffect(() => {
     return { ...currentData.value };
   });
 </script>

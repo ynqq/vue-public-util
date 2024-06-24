@@ -12,12 +12,12 @@
   import { useProvideEffect } from '@app/utils';
   import { ElMessage } from 'element-plus';
   import { reactive } from 'vue';
-  const { regCheckEffect, regDataEffect } = useProvideEffect();
+  const { onCheckEffect, onDataEffect } = useProvideEffect();
   const form = reactive({
     name: '',
   });
 
-  regCheckEffect(() => {
+  onCheckEffect(() => {
     if (form.name === '') {
       ElMessage.warning('请输入姓名');
       return false;
@@ -25,7 +25,7 @@
     return true;
   });
 
-  regDataEffect(() => {
+  onDataEffect(() => {
     return {
       name: form.name,
     };

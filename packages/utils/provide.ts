@@ -32,7 +32,7 @@ export const useProvideEffect = (isRoot = false, uninstall = true) => {
     }
   };
 
-  const regEffect = (type: TBucketType, key: Symbol, fun: Function) => {
+  const onEffect = (type: TBucketType, key: Symbol, fun: Function) => {
     const rootBucket = getBucket(isRoot ? instance?.parent : instance);
     if (rootBucket) {
       rootBucket.get(type)!.set(key, fun);
@@ -40,14 +40,14 @@ export const useProvideEffect = (isRoot = false, uninstall = true) => {
     return key;
   };
 
-  const regCheckEffect = (fun: (...args: any[]) => boolean | Promise<boolean>, key = Symbol()) => {
+  const onCheckEffect = (fun: () => boolean | Promise<boolean>, key = Symbol()) => {
     checkKey = key;
-    return regEffect(TBucketType.check, key, fun);
+    return onEffect(TBucketType.check, key, fun);
   };
 
-  const regDataEffect = (fun: (...args: any[]) => any, key = Symbol()) => {
+  const onDataEffect = (fun: () => any, key = Symbol()) => {
     dataKey = key;
-    return regEffect(TBucketType.data, key, fun);
+    return onEffect(TBucketType.data, key, fun);
   };
 
   const getEffectByType = (type: TBucketType) => {
@@ -106,6 +106,17 @@ export const useProvideEffect = (isRoot = false, uninstall = true) => {
     return deleteEffect(TBucketType.data, key);
   };
 
+  const checkIsReg = (type: TBucketType) => {
+    return !!getEffectByType(type)?.size;
+  };
+
+  const getInstanceEffects = (instance: ComponentInternalInstance, type: TBucketType) => {
+    if (instance.bucket) {
+      return instance.bucket.get(type);
+    }
+    return null;
+  };
+
   start();
 
   if (uninstall) {
@@ -120,13 +131,19 @@ export const useProvideEffect = (isRoot = false, uninstall = true) => {
   }
 
   return {
-    regEffect,
-    regCheckEffect,
-    regDataEffect,
+    onEffect,
+    onCheckEffect,
+    onDataEffect,
+
     deleteEffect,
     deleteCheckEffect,
     deleteDataEffect,
+
+    getInstanceEffects,
+
     runCheck,
     runData,
+
+    checkIsReg,
   };
 };

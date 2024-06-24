@@ -1,5 +1,11 @@
 <template>
   <div>
+    <PlButton @click="handleKeyChange">change</PlButton>
+    <PlButton @click="handleKeyChange2">change2</PlButton>
+    {{ divKey }}
+    <div :key="divKey">
+      <div v-for="item in list" :key="item.key" class="keyItem">{{ item.value }}</div>
+    </div>
     <ProvideCom />
     <Btn />
     <div type="primary" @click="handleShowModal">显示Modal</div>
@@ -61,6 +67,20 @@
   };
   const handleShowDrawer = async () => {
     tableData.value[0].name = Math.random() + '';
+  };
+
+  const list = [...new Array(10)].map((_, index) => ({
+    key: index,
+    value: 'zhi' + index,
+  }));
+  const divKey = ref(1);
+  const handleKeyChange = () => {
+    const allKeys = document.querySelectorAll('.keyItem');
+    allKeys[2].before(allKeys[5]);
+    divKey.value = divKey.value + 1;
+  };
+  const handleKeyChange2 = () => {
+    divKey.value = divKey.value + 1;
   };
 </script>
 

@@ -9,6 +9,7 @@ export * from './action';
 export * from './provide';
 export * from './cache';
 export * from './deep';
+export * from './open';
 /**
  * 等待一段时间
  * @param time 等待时间

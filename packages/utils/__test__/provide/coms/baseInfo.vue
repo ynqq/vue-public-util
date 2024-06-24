@@ -8,12 +8,12 @@
   import { useProvideEffect } from '@app/utils';
   import { ElMessage } from 'element-plus';
   import { reactive } from 'vue';
-  const { regCheckEffect, regDataEffect } = useProvideEffect();
+  const { onCheckEffect, onDataEffect } = useProvideEffect();
   const form = reactive({
     name: '',
   });
 
-  regCheckEffect(() => {
+  onCheckEffect(() => {
     if (form.name === '') {
       // eslint-disable-next-line no-console
       console.log('基础信息校验不通过');
@@ -26,7 +26,7 @@
     return true;
   });
 
-  regDataEffect(() => {
+  onDataEffect(() => {
     return {
       name: form.name,
     };

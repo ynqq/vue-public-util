@@ -33,6 +33,7 @@ export const listenRouter = () => {
           //
         }
       });
+      routerEvents.length = 0;
       next();
     });
   }

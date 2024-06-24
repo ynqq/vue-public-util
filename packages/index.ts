@@ -1,6 +1,6 @@
 import { App } from 'vue';
 import VuePublicButton from './components/Button/index.vue';
-import { IConfigOptions, TBucket } from './types';
+import { IConfigOptions, TBucket, TOpenBucket } from './types';
 import { setConfig } from './utils/config';
 import { initI18n } from './locales';
 export { default as PlButton } from './components/Button/index.vue';
@@ -36,6 +36,7 @@ declare module 'vue' {
 
   interface ComponentInternalInstance {
     bucket: TBucket;
+    openBucket: TOpenBucket;
   }
 }
 
