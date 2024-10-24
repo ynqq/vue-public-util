@@ -5,7 +5,8 @@
     "name": "ynqq"
   },
   "files": [
-    "/dist"
+    "/dist",
+    "!__test__"
   ],
   "license": "MIT",
   "repository": {
