@@ -1,5 +1,6 @@
 import { ButtonProps } from 'element-plus';
 import { ComponentInternalInstance, DefineComponent } from 'vue';
+import { JSX } from 'vue/jsx-runtime';
 /**
  * 按钮props
  */
