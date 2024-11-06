@@ -32,4 +32,4 @@ export const initI18n = () => {
   (i18n.global.messages[LANGUAGE.enus] as any) = deepObjectAssign(enL, getConfigLanguages()?.[LANGUAGE.enus] || {});
 };
 
-export const $t = i18n.global.t;
+export const $t: typeof i18n.global.t = i18n.global.t;
