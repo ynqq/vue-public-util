@@ -53,6 +53,7 @@ interface IUseFun<F extends (...args: any[]) => any, D = ReturnType<F>, R = D ex
  */
 export type TUseLoading = <F extends (...args: any[]) => any>(fun: F) => IUseFun<F>;
 export type ValueOf<T> = T[keyof T];
+export type VueValueOf<T extends Record<string, Ref<any>>> = T[keyof T]['value'];
 export enum EActionEnum {
   'isCreate' = '1',
   'isUpdate' = '2',

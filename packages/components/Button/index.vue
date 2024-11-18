@@ -8,8 +8,9 @@
 
 <script setup lang="ts">
   import { ElButton } from 'element-plus';
-  import { ref } from 'vue';
+  import { ref, toRefs } from 'vue';
   import { IPublicButtonProps } from '@app/components/type';
+  import { useRefProps } from '@app/components/util/openHooks';
 
   defineOptions({
     name: 'PlButton',
@@ -21,7 +22,9 @@
     showLoadingStatus: true,
   });
 
-  const { onClick: _onClick, class: spanClass, duration, showLoadingStatus, btnClass, ...otherAttrs } = props;
+  const { onClick: _onClick, class: spanClass, duration, showLoadingStatus, btnClass, ..._otherProps } = toRefs(props);
+
+  const otherAttrs = useRefProps(_otherProps);
 
   const loading = ref(false);
   let handling = false;
@@ -34,7 +37,7 @@
     }
     handling = true;
     const nowTime = Date.now();
-    if (showLoadingStatus) {
+    if (showLoadingStatus.value) {
       loading.value = true;
     }
     try {
@@ -44,10 +47,10 @@
     } finally {
       handling = false;
     }
-    if (showLoadingStatus) {
+    if (showLoadingStatus.value) {
       setTimeout(() => {
         loading.value = false;
-      }, Math.max(duration - (Date.now() - nowTime), 0));
+      }, Math.max(duration.value - (Date.now() - nowTime), 0));
     }
     e.stopPropagation();
     e.preventDefault();

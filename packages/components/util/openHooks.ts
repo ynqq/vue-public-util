@@ -1,5 +1,5 @@
 import { sleep, useOpen } from '@app/utils';
-import { ref, onMounted, nextTick, inject, Ref, provide, useAttrs, getCurrentInstance } from 'vue';
+import { ref, onMounted, nextTick, inject, Ref, provide, useAttrs, getCurrentInstance, computed } from 'vue';
 import { ModalDoneFun, IPLContainerProvide, IPLContainerValues, TPLContainerTrigger, IPLContainerProps } from '../type';
 import { TOpenBucketType } from '@app/types';
 
@@ -178,4 +178,24 @@ export const useOpenHooks = (props: IPLContainerProps, emit: any) => {
     handleClose,
     show,
   };
+};
+
+/**
+ * toRefs(props)处理为响应式
+ * @param props props
+ * @returns 解包后的props
+ */
+export const useRefProps = (props: Record<string, Ref>) => {
+  return computed(() => {
+    const attrs: { [k in keyof typeof props]: (typeof props)[k]['value'] } = {} as {
+      [k in keyof typeof props]: (typeof props)[k]['value'];
+    };
+    Object.keys(props).forEach(key => {
+      const k = key as keyof typeof props;
+      Object.assign(attrs, {
+        [k]: props[k].value,
+      });
+    });
+    return attrs;
+  });
 };

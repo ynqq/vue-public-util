@@ -1,7 +1,7 @@
 <template>
   <div>
-    <PlButton @click="handleKeyChange">change</PlButton>
-    <PlButton @click="handleKeyChange2">change2</PlButton>
+    <PlButton :type="boo ? 'primary' : 'danger'" :duration="boo ? 500 : 10000" @click="handleKeyChange">change{{ boo }}</PlButton>
+    <PlButton type="primary" @click="handleKeyChange2">change2</PlButton>
     {{ divKey }}
     <div :key="divKey">
       <div v-for="item in list" :key="item.key" class="keyItem">{{ item.value }}</div>
@@ -26,7 +26,8 @@
   import { ref } from 'vue';
   import ProvideCom from './components/provideCom/index.vue';
 
-  console.log(getCurrentInstance());
+  const boo = ref(false);
+
   (getCurrentInstance() as any).a = 123;
 
   const tableData = ref([
@@ -55,8 +56,10 @@
   const handleShowModal = async () => {
     try {
       const ops = await showAddModal({ num: 1 });
+      // eslint-disable-next-line no-console
       console.log(ops.data);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error, '???');
     }
   };
@@ -75,6 +78,7 @@
   }));
   const divKey = ref(1);
   const handleKeyChange = () => {
+    boo.value = !boo.value;
     const allKeys = document.querySelectorAll('.keyItem');
     allKeys[2].before(allKeys[5]);
     divKey.value = divKey.value + 1;
