@@ -54,6 +54,11 @@ export default defineConfig({
     vueJsx(),
     dts({
       include: 'packages',
+      beforeWriteFile: (filePath: string) => {
+        if (filePath.includes('__test__')) {
+          return Promise.resolve(false);
+        }
+      },
     }),
     AutoImport({
       resolvers: [
