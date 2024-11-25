@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="select-box">
     <div v-for="item in list" :key="item.value" class="item">{{ item.label }}</div>
   </div>
 </template>
@@ -9,17 +9,19 @@
   import { ref } from 'vue';
   import { fetchAction, getNum } from './api';
 
-  const time = 500;
+  const props = defineProps<{
+    time: number;
+  }>();
 
   const { fetch } = useFetchOnce({ name: 'comName', query: fetchAction });
   const list = ref<{ label: string; value: string }[]>([{ label: 'a', value: 'a' }]);
   const fetchList = async () => {
-    const { data } = await fetch(3, time);
+    const { data } = await fetch(3, props.time);
     list.value = data;
   };
   fetchList();
   const next = async () => {
-    await sleep(time);
+    await sleep(props.time);
   };
   defineExpose({ next, getNum });
 </script>

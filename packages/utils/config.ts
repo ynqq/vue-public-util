@@ -6,7 +6,7 @@ const config: IConfigOptions = {
   locel: LANGUAGE.zhcn,
 };
 
-export const getConfigLanguages = () => {
+export const getConfigLanguages: () => IConfigOptions['langus'] = () => {
   const { langus } = config;
   return langus;
 };

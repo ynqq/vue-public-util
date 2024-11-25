@@ -1,39 +1,36 @@
 <template>
   <div ref="boxRef" class="box">
+    {{ random }}
     <el-input v-model="val"></el-input>
   </div>
 </template>
 
 <script setup lang="ts">
   import { IPLContainerValues } from '@app/components/type';
-  import { sleep } from '@app/utils/index';
+  import { sleep, useOpen } from '@app/utils/index';
   import { useLoading } from '@app/utils/loading/index';
   import { ref, onMounted } from 'vue';
 
   export interface CustomAction extends IPLContainerValues {
-    isAgree: boolean;
-    isReject: boolean;
+    isAgree?: boolean;
+    isReject?: boolean;
   }
+
+  const { onConfirmEffect } = useOpen();
 
   const boxRef = ref();
   const val = ref('base');
 
-  // 执行确定的回调事件 默认是: 确定 取消
-  const confirm = async (options: IPLContainerValues) => {
-    if (options.isConfirm) {
-      // 可以通过options 判断是哪种操作
+  onConfirmEffect<CustomAction>(async options => {
+    // eslint-disable-next-line no-console
+    console.log(options);
+
+    if (options.isAgree) {
+      //
     }
-    await sleep(1000);
-    // 需要手动执行close事件来关闭模态
-    await options.close();
-    /**
-     * 返回值可以在外部直接获取到
-     * @example
-     * const ops = await showAddModal({ num: 1 });
-     * console.log(ops.data); // data = { a: 123 }
-     */
+    await sleep(2000);
     return { a: 123 };
-  };
+  });
   // 自定义确定的事件类型, 可以在自定义header或footer中使用
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -53,9 +50,12 @@
   onMounted(() => {
     init('');
   });
-  // 必须要暴露confirm事件
+
+  const random = ref(Math.random());
+  setInterval(() => (random.value = Math.random()), 3000);
   defineExpose({
-    confirm,
+    random,
+    val,
   });
 </script>
 

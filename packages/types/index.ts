@@ -53,6 +53,7 @@ interface IUseFun<F extends (...args: any[]) => any, D = ReturnType<F>, R = D ex
  */
 export type TUseLoading = <F extends (...args: any[]) => any>(fun: F) => IUseFun<F>;
 export type ValueOf<T> = T[keyof T];
+export type VueValueOf<T extends Record<string, Ref<any>>> = T[keyof T]['value'];
 export enum EActionEnum {
   'isCreate' = '1',
   'isUpdate' = '2',
@@ -92,6 +93,11 @@ export interface IUseFetchOnceOptions<F extends (...args: any[]) => any> {
    * @returns
    */
   query: F;
+  /**
+   * 是否在组件销毁时清除数据缓存
+   * @default false
+   */
+  uninstall?: boolean;
 }
 /**
  * K 必填 其他非必填
@@ -110,3 +116,40 @@ export type OmitRequired<O extends Record<string | number | symbol, any>, K exte
 } & {
   [k in keyof D2]-?: D2[k];
 };
+
+export enum TBucketType {
+  check = 'CHECK',
+  data = 'DATA',
+}
+
+export type TBucket = Map<TBucketType, Map<Symbol, Function>>;
+
+export enum TOpenBucketType {
+  confirm = 'CONFIRM',
+  close = 'CLOSE',
+  expose = 'EXPOSE',
+}
+
+export type TOpenBucket = Map<TOpenBucketType, Map<Symbol, Function>>;
+
+export interface IUseDeepFnOptions<R> {
+  /**
+   * 循环上限次数
+   * @default 10
+   */
+  limit: number;
+  /**
+   * 间隔时间
+   * @default 300 (ms)
+   */
+  time: number;
+  /**
+   * 验证方法 不传只校验 !!(fun返回值)
+   * @param result fun的返回值
+   * @returns boolean
+   */
+  checker?: (result: R) => boolean;
+}
+export interface IUseDeepFn {
+  <F extends (...args: any[]) => any, R = ReturnType<F>>(fun: F, options?: IUseDeepFnOptions<R>): (...args: Parameters<F>) => Promise<R>;
+}

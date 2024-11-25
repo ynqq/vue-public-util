@@ -27,12 +27,14 @@ export default defineConfig({
       fileName: format => `${pkg.name}.${format}.js`,
     },
     rollupOptions: {
-      external: ['vue', 'vue-i18n', 'element-plus'],
+      external: ['vue', 'vue-i18n', 'element-plus', 'vue-router', 'element-plus/es/locales.mjs'],
       output: {
         globals: {
           vue: 'Vue',
           'vue-i18n': 'VueI18N',
           'element-plus': 'ElementPlus',
+          'vue-router': 'VueRouter',
+          'element-plus/es/locales.mjs': 'element-plus/es/locales.mjs',
         },
       },
     },
@@ -52,6 +54,11 @@ export default defineConfig({
     vueJsx(),
     dts({
       include: 'packages',
+      beforeWriteFile: (filePath: string) => {
+        if (filePath.includes('__test__')) {
+          return Promise.resolve(false);
+        }
+      },
     }),
     AutoImport({
       resolvers: [

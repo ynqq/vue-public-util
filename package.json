@@ -1,11 +1,12 @@
 {
   "name": "vue-public-util",
-  "version": "1.2.7",
+  "version": "2.0.6",
   "author": {
     "name": "ynqq"
   },
   "files": [
-    "/dist"
+    "/dist",
+    "!__test__"
   ],
   "license": "MIT",
   "repository": {
@@ -34,7 +35,8 @@
   "peerDependencies": {
     "element-plus": ">=2",
     "vue": ">=3",
-    "vue-i18n": ">=9.7.1"
+    "vue-i18n": ">=9.7.1",
+    "vue-router": ">=4"
   },
   "devDependencies": {
     "@tsconfig/node18": "^2.0.0",
@@ -66,6 +68,7 @@
     "vitest": "^1.1.0",
     "vue": "^3.3.8",
     "vue-i18n": "^9.7.1",
-    "vue-tsc": "^1.8.22"
+    "vue-router": "^4.3.0",
+    "vue-tsc": "^2.1.6"
   }
 }

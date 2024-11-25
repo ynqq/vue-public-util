@@ -1,5 +1,6 @@
 import { ButtonProps } from 'element-plus';
-import { DefineComponent } from 'vue';
+import { ComponentInternalInstance, DefineComponent } from 'vue';
+import { JSX } from 'vue/jsx-runtime';
 /**
  * 按钮props
  */
@@ -94,11 +95,11 @@ export interface IPLContainerProps {
   /**
    * header 弹窗标题slot
    */
-  header?: () => () => JSX.Element;
+  header?: (ctx: ComponentInternalInstance) => () => JSX.Element;
   /**
    * footer 弹窗标题slot
    */
-  footer?: () => () => JSX.Element;
+  footer?: (ctx: ComponentInternalInstance) => () => JSX.Element;
   /**
    * confirmText 确定按钮文字 默认: 确定
    */
