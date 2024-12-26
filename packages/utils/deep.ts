@@ -1,6 +1,14 @@
 import { IUseDeepFn } from '@app/types';
 import { sleep } from '@app/utils/index';
 
+/**
+ * 异步递归判断条件是否达成
+ * @param fun 判断函数
+ * @param param1.limit 判断次数
+ * @param param1.checker 校验函数，不传就判断fun的返回值是否为true
+ * @param param1.time 下一次判断间隔时间
+ * @returns promise 达成条件/未达成
+ */
 export const useDeepFn: IUseDeepFn = (fun, { limit, checker, time } = { limit: 10, time: 300 }) => {
   let _fetchNum = 1;
 

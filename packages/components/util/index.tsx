@@ -1,20 +1,32 @@
 import { createApp, ref } from 'vue';
-import { TUseContainer, TUseContainerFun } from '../type';
+import { IPLModalData, TUseContainer, TUseContainerFun } from '../type';
 import { getPlugins } from '@app/utils/plugin';
 import { DataUtil, install, sleep } from '@app/index';
 import { CANCEL_ERROR } from '@app/enums';
 
 export function genAppContainer<C>(ModalCom: any): TUseContainer<C> {
   return (Com, modalProps) => {
-    let current: any;
+    let current: any,
+      _resolve: (value: IPLModalData<any> | PromiseLike<IPLModalData<any>>) => void,
+      _reject: (reason?: any) => void,
+      destroyFun: (destroy?: boolean) => Promise<void>;
     const currentFun: TUseContainerFun<any, any> = (props: any) => {
       return new Promise((resolve, reject) => {
         try {
+          _resolve = resolve;
+          _reject = reject;
+          if (current) {
+            current.value.show();
+            return;
+          }
           const childRef = ref();
           const containerRef = ref();
           current = containerRef;
-          const destroy = async () => {
+          destroyFun = async (destroy?: boolean) => {
             try {
+              if (!destroy && modalProps.forever) {
+                return;
+              }
               current = null;
               await sleep(400);
               app.unmount();
@@ -36,12 +48,12 @@ export function genAppContainer<C>(ModalCom: any): TUseContainer<C> {
                     return await childRef.value.confirm(...args);
                   }}
                   onConfirm={(data: any) => {
-                    resolve({ data });
-                    destroy();
+                    _resolve({ data });
+                    destroyFun();
                   }}
                   onCancel={(error: any) => {
-                    reject(DataUtil.isUndefined(error) ? CANCEL_ERROR : error);
-                    destroy();
+                    _reject(DataUtil.isUndefined(error) ? CANCEL_ERROR : error);
+                    destroyFun();
                   }}
                 >
                   <Com ref={childRef} {...props} />
@@ -69,6 +81,7 @@ export function genAppContainer<C>(ModalCom: any): TUseContainer<C> {
         current.value.show();
       }
     };
+    currentFun.destroy = () => destroyFun(true);
     currentFun.hasCurrent = () => {
       return current ? !!current.value : false;
     };

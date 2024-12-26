@@ -1,5 +1,5 @@
 import { sleep, useOpen } from '@app/utils';
-import { ref, onMounted, nextTick, inject, Ref, provide, useAttrs, getCurrentInstance, computed } from 'vue';
+import { ref, onMounted, nextTick, inject, Ref, provide, useAttrs, getCurrentInstance, computed, watch } from 'vue';
 import { ModalDoneFun, IPLContainerProvide, IPLContainerValues, TPLContainerTrigger, IPLContainerProps } from '../type';
 import { TOpenBucketType } from '@app/types';
 
@@ -8,12 +8,21 @@ export const useOpenHooks = (props: IPLContainerProps, emit: any) => {
   const { hideFooter, hideHeader, childFun, title, header, footer, cancelHasEvent, confirmText, confirmProps, cancelProps, cancelText, beforeClose } =
     props;
   const instance = getCurrentInstance();
-  const { runConfirm, checkIsReg, onExposeEffect, onCloseEffect } = useOpen(true);
+  const { runConfirm, runClosed, runShow, checkIsReg, onExposeEffect, onCancelEffect } = useOpen(true);
 
   const HeaderCom = header ? header(instance!) : null;
   const FooterCom = footer ? footer(instance!) : null;
 
   const visible = ref(false);
+  watch(
+    visible,
+    newVal => {
+      if (newVal) {
+        runShow();
+      }
+    },
+    { immediate: true }
+  );
   let handing = false;
   let isCloseEvent = false;
 
@@ -72,6 +81,7 @@ export const useOpenHooks = (props: IPLContainerProps, emit: any) => {
           childFun && (data = await childFun(params));
         }
         emit('confirm', data);
+        runClosed();
       } finally {
         setHanding();
       }
@@ -91,20 +101,26 @@ export const useOpenHooks = (props: IPLContainerProps, emit: any) => {
             childFun && (data = await childFun(params));
           }
           emit('confirm', data);
+          runClosed();
         } finally {
           setHanding();
         }
         return;
       }
       await close();
-      emit('cancel');
+      handleCloseEmit();
     }
   };
   const handleClose = () => {
     if (isCloseEvent) {
       return;
     }
+    handleCloseEmit();
+  };
+
+  const handleCloseEmit = () => {
     emit('cancel');
+    runClosed();
   };
 
   // 注册一些事件 可以在 自定义header/footer直接调用
@@ -120,21 +136,25 @@ export const useOpenHooks = (props: IPLContainerProps, emit: any) => {
           childFun && (data = await childFun(params));
         }
         emit('confirm', data);
+        runClosed();
       } finally {
         setHanding();
       }
     }
   });
-  onCloseEffect(async () => {
+  onCancelEffect(async () => {
     if (checkHandling()) {
       await close();
-      emit('cancel');
+      handleCloseEmit();
     }
   });
 
   onMounted(() => {
     nextTick(() => {
       visible.value = true;
+      nextTick(() => {
+        runShow();
+      });
     });
   });
   const childRef = inject<Ref<any>>('childRef')!;
@@ -154,6 +174,7 @@ export const useOpenHooks = (props: IPLContainerProps, emit: any) => {
     } else {
       emit(type as 'cancel');
     }
+    runClosed();
     return data;
   };
   provide('show', show);

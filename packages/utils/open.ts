@@ -64,10 +64,34 @@ function useFun(isRoot: boolean | string = false, ctx?: ComponentInternalInstanc
     return regEffect(TOpenBucketType.expose, key, fun);
   };
 
-  const onCloseEffect = (fun: Function, key = Symbol()) => {
+  /**
+   * 内部调用 处理close事件
+   * @param fun
+   * @param key
+   * @returns
+   */
+  const onCancelEffect = (fun: Function, key = Symbol()) => {
     checkHas(TOpenBucketType.close);
     closeKey = key;
     return regEffect(TOpenBucketType.close, key, fun);
+  };
+  /**
+   * 关闭之后的回调
+   * @param fun 回调函数
+   * @param key key
+   */
+  const onClosedEffect = (fun: Function, key = Symbol()) => {
+    return regEffect(TOpenBucketType.closed, key, fun);
+  };
+
+  /**
+   * 显示的回调
+   * @param fun  回调函数
+   * @param key  key
+   * @returns
+   */
+  const onShowEffect = (fun: Function, key = Symbol()) => {
+    return regEffect(TOpenBucketType.show, key, fun);
   };
 
   // 特殊的confirm 返回一个函数
@@ -75,8 +99,12 @@ function useFun(isRoot: boolean | string = false, ctx?: ComponentInternalInstanc
     effects = effects || getEffectByType(TOpenBucketType.confirm);
     if (effects?.size) {
       return (options: T) => {
-        const fun = Array.from(effects.values())[0];
-        return fun && fun(options);
+        try {
+          const fun = Array.from(effects.values())[0];
+          return fun && fun(options);
+        } catch (error) {
+          //
+        }
       };
     }
     return null;
@@ -86,8 +114,12 @@ function useFun(isRoot: boolean | string = false, ctx?: ComponentInternalInstanc
     effects = effects || getEffectByType(TOpenBucketType.close);
     if (effects?.size) {
       return () => {
-        const fun = Array.from(effects.values())[0];
-        return fun && fun();
+        try {
+          const fun = Array.from(effects.values())[0];
+          return fun && fun();
+        } catch (error) {
+          //
+        }
       };
     }
     return null;
@@ -97,11 +129,44 @@ function useFun(isRoot: boolean | string = false, ctx?: ComponentInternalInstanc
     effects = effects || getEffectByType(TOpenBucketType.confirm);
     if (effects?.size) {
       return (options: T) => {
-        const fun = Array.from(effects.values())[0];
-        return fun && fun(options);
+        try {
+          const fun = Array.from(effects.values())[0];
+          return fun && fun(options);
+        } catch (error) {
+          //
+        }
       };
     }
     return null;
+  };
+
+  const runClosed = (effects?: Map<Symbol, Function> | null) => {
+    effects = effects || getEffectByType(TOpenBucketType.closed);
+    if (effects?.size) {
+      const funs = Array.from(effects.values());
+      funs.forEach(fun => {
+        try {
+          fun && fun();
+        } catch (error) {
+          //
+        }
+      });
+    }
+  };
+
+  const runShow = (effects?: Map<Symbol, Function> | null) => {
+    effects = effects || getEffectByType(TOpenBucketType.show);
+    if (effects?.size) {
+      const funs = Array.from(effects.values());
+
+      funs.forEach(fun => {
+        try {
+          fun && fun();
+        } catch (error) {
+          //
+        }
+      });
+    }
   };
 
   const deleteEffect = (type: TOpenBucketType, key: Symbol) => {
@@ -174,11 +239,15 @@ function useFun(isRoot: boolean | string = false, ctx?: ComponentInternalInstanc
   return {
     onConfirmEffect,
     onExposeEffect,
-    onCloseEffect,
+    onCancelEffect,
+    onClosedEffect,
+    onShowEffect,
 
     runConfirm,
     runClose,
     runExpose,
+    runClosed,
+    runShow,
 
     runInstanceExpose,
     runInstanceClose,
@@ -188,6 +257,10 @@ function useFun(isRoot: boolean | string = false, ctx?: ComponentInternalInstanc
   };
 }
 
+/**
+ * openHooks
+ * @param isRoot 是否是根组件(组件库用，业务中不需要传递)
+ */
 export function useOpen(isRoot: true): ReturnType<typeof useFun>;
 export function useOpen(isRoot: false, ctx: ComponentInternalInstance | null): ReturnType<typeof useFun>;
 export function useOpen(isRoot?: string): ReturnType<typeof useFun>;

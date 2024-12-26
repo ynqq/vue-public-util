@@ -2,6 +2,7 @@
   <div ref="boxRef" class="box">
     {{ random }}
     <el-input v-model="val"></el-input>
+    <Child1 />
   </div>
 </template>
 
@@ -10,13 +11,14 @@
   import { sleep, useOpen } from '@app/utils/index';
   import { useLoading } from '@app/utils/loading/index';
   import { ref, onMounted } from 'vue';
+  import Child1 from './child1.vue';
 
   export interface CustomAction extends IPLContainerValues {
     isAgree?: boolean;
     isReject?: boolean;
   }
 
-  const { onConfirmEffect } = useOpen();
+  const { onConfirmEffect, onClosedEffect, onShowEffect } = useOpen();
 
   const boxRef = ref();
   const val = ref('base');
@@ -31,6 +33,13 @@
     await sleep(2000);
     return { a: 123 };
   });
+
+  onClosedEffect(() => {
+    console.log('close');
+  });
+  onShowEffect(() => {
+    console.log('show');
+  });
   // 自定义确定的事件类型, 可以在自定义header或footer中使用
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -44,7 +53,7 @@
   };
 
   const init = useLoading(async (str: string) => {
-    await sleep(1000);
+    await sleep(300);
     return str;
   }).setContainer(boxRef);
   onMounted(() => {
@@ -52,7 +61,6 @@
   });
 
   const random = ref(Math.random());
-  setInterval(() => (random.value = Math.random()), 3000);
   defineExpose({
     random,
     val,

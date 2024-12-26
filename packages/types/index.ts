@@ -128,6 +128,8 @@ export enum TOpenBucketType {
   confirm = 'CONFIRM',
   close = 'CLOSE',
   expose = 'EXPOSE',
+  closed = 'CLOSED',
+  show = 'SHOW',
 }
 
 export type TOpenBucket = Map<TOpenBucketType, Map<Symbol, Function>>;

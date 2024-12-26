@@ -1,10 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 import Modal, { CustomAction } from './modal.vue';
-import { ComponentInternalInstance, Ref, inject } from 'vue';
+import { ComponentInternalInstance, Ref, getCurrentScope, inject, onScopeDispose, onUnmounted } from 'vue';
 import { IPLContainerProvide } from '@app/components/type';
 // import { usePlModal } from '../../../';
 import { usePlModal } from '../../../packages/components/Modal/util';
 import { useOpen } from '@app/utils';
+import { EActionEnum, usePlDrawer } from '@app/index';
 
 const headerFun = (ctx: ComponentInternalInstance) => {
   return () => {
@@ -46,6 +47,12 @@ const headerFun = (ctx: ComponentInternalInstance) => {
   };
 };
 const footerFun = () => {
+  if (getCurrentScope()) {
+    onScopeDispose(() => {
+      console.log('llll');
+    });
+  }
+
   return () => {
     const close = inject<IPLContainerProvide['close']>('close');
     const childRef = inject<Ref<InstanceType<typeof Modal>>>('childRef');
@@ -73,12 +80,26 @@ const footerFun = () => {
   };
 };
 
-export const showAddModal = usePlModal<{ num: number }, { data: number }>(Modal, {
+export const demo = () => {
+  onUnmounted(() => {
+    console.log('asdads');
+  });
+};
+
+export const showAddModal = usePlDrawer<{ num: number }, { data: number }>(Modal, {
   title: 'asd',
   width: '1000px',
   header: headerFun,
   showClose: false,
-  footer: footerFun,
+  // footer: footerFun,
+  // forever: true,
+  draggable: true,
+});
+export const showEditModal = usePlModal<{ num: number; action: EActionEnum }, { data: number }>(Modal, {
+  title: '标题',
+  header: headerFun,
+  forever: true,
+  draggable: true,
 });
 
 // usePlModal<Props, Response>(ChildCom, options)

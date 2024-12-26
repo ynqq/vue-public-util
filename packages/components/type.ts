@@ -86,6 +86,10 @@ export interface IPLContainerProps {
   childFun: (options: IPLContainerValues) => any;
   onConfirm?: (...args: any[]) => any;
   onCancel?: (...args: any[]) => any;
+  /**
+   * 关闭之后不销毁 默认: false
+   */
+  forever?: boolean;
   closeOnClickModal?: boolean;
   closeOnPressEscape?: boolean;
   /**
@@ -142,6 +146,7 @@ export interface TUseContainerFun<P, D> {
   (props: P): Promise<IPLModalData<D>>;
   show: () => void;
   hasCurrent: () => boolean;
+  destroy: () => Promise<void>;
 }
 export type TUseContainer<C> = <P = any, D = any>(
   Com: any,
