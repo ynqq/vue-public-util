@@ -6,6 +6,7 @@ import 'element-plus/dist/index.css';
 // import '../dist/style.css';
 import ElementPlus from 'element-plus';
 import router from './router';
+console.log(import.meta.env);
 
 setPlugins([router]);
 

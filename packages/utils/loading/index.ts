@@ -63,16 +63,18 @@ const createLoading = (parentEl: Ref<HTMLDivElement>, msg: string | VNode) => {
  * ```
  */
 export const useLoading: TUseLoading = (fun => {
-  let parentEl: Ref<HTMLDivElement>;
-  let loadingEl: HTMLDivElement;
+  let parentEl: Ref<HTMLDivElement> | null;
+  let loadingEl: HTMLDivElement | null;
   let loadingMessage: string | VNode = getConfigLoading()?.text || loadingConfig.message.info;
   const result = async (...args: any[]) => {
-    loadingEl = createLoading(parentEl, loadingMessage);
+    loadingEl = createLoading(parentEl!, loadingMessage);
     try {
       const data = await fun(...args);
       return data;
     } finally {
+      parentEl = null;
       loadingEl.remove();
+      loadingEl = null;
     }
   };
   result.setContainer = (el: Ref<HTMLDivElement>) => {
@@ -81,6 +83,7 @@ export const useLoading: TUseLoading = (fun => {
   };
   result.stop = () => {
     loadingEl?.remove();
+    loadingEl = null;
     return result;
   };
   result.setMsg = (str: string | VNode) => {

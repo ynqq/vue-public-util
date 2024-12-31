@@ -6,39 +6,40 @@
 
 <script setup lang="ts">
   import { IPLContainerValues } from '@app/components/type';
+  import { TOpenBucketType } from '@app/types';
   import { sleep, useOpen } from '@app/utils/index';
   import { useLoading } from '@app/utils/loading/index';
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, onBeforeUnmount } from 'vue';
 
   export interface CustomAction extends IPLContainerValues {
     isAgree?: boolean;
     isReject?: boolean;
   }
 
-  const { onConfirmEffect, onClosedEffect, onShowEffect } = useOpen();
+  // const { onConfirmEffect, onClosedEffect, onShowEffect, removeEffect } = useOpen();
 
   const boxRef = ref();
   const val = ref('base');
   const obj = { name: 'asdad', _asd: true };
   ref(obj);
 
-  onConfirmEffect<CustomAction>(async options => {
-    // eslint-disable-next-line no-console
-    console.log(options);
+  // const confirmKey = onConfirmEffect<CustomAction>(async options => {
+  //   // eslint-disable-next-line no-console
+  //   console.log(options);
 
-    if (options.isAgree) {
-      //
-    }
-    await sleep(2000);
-    return { a: 123 };
-  });
+  //   if (options.isAgree) {
+  //     //
+  //   }
+  //   await sleep(2000);
+  //   return { a: 123 };
+  // });
 
-  onClosedEffect(() => {
-    console.log('close');
-  });
-  onShowEffect(() => {
-    console.log('show');
-  });
+  // const closeKey = onClosedEffect(() => {
+  //   console.log('close');
+  // });
+  // const showKey = onShowEffect(() => {
+  //   console.log('show');
+  // });
   // 自定义确定的事件类型, 可以在自定义header或footer中使用
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -57,6 +58,12 @@
   }).setContainer(boxRef);
   onMounted(() => {
     init('');
+  });
+
+  onBeforeUnmount(() => {
+    // removeEffect(TOpenBucketType.closed, closeKey);
+    // removeEffect(TOpenBucketType.show, showKey);
+    // removeEffect(TOpenBucketType.confirm, confirmKey);
   });
 
   const random = ref(Math.random());

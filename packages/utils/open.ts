@@ -38,6 +38,14 @@ function useFun(isRoot: boolean | string = false, ctx?: ComponentInternalInstanc
     return key;
   };
 
+  const removeEffect = (type: TOpenBucketType, key: Symbol) => {
+    const rootBucket = getBucket(isRoot ? instance : instance?.parent);
+    if (rootBucket) {
+      return rootBucket.get(type)!.delete(key);
+    }
+    return false;
+  };
+
   const getEffectByType = (type: TOpenBucketType) => {
     if (instance?.openBucket) {
       return instance.openBucket.get(type);
@@ -226,7 +234,6 @@ function useFun(isRoot: boolean | string = false, ctx?: ComponentInternalInstanc
   };
 
   onBeforeUnmount(() => {
-
     // watchInstance && watchInstance.stop();
     if (confirmKey) {
       deleteConfirmEffect(confirmKey);
@@ -251,6 +258,7 @@ function useFun(isRoot: boolean | string = false, ctx?: ComponentInternalInstanc
     runExpose,
     runClosed,
     runShow,
+    removeEffect,
 
     runInstanceExpose,
     runInstanceClose,

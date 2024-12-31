@@ -7,8 +7,8 @@ import { CANCEL_ERROR } from '@app/enums';
 export function genAppContainer<C>(ModalCom: any): TUseContainer<C> {
   return (Com, modalProps) => {
     let current: any,
-      _resolve: (value: IPLModalData<any> | PromiseLike<IPLModalData<any>>) => void,
-      _reject: (reason?: any) => void,
+      _resolve: ((value: IPLModalData<any> | PromiseLike<IPLModalData<any>>) => void) | null,
+      _reject: ((reason?: any) => void) | null,
       destroyFun: (destroy?: boolean) => Promise<void>;
     const currentFun: TUseContainerFun<any, any> = (props: any) => {
       return new Promise((resolve, reject) => {
@@ -27,6 +27,9 @@ export function genAppContainer<C>(ModalCom: any): TUseContainer<C> {
               if (!destroy && modalProps.forever) {
                 return;
               }
+              console.log('des');
+              _resolve = null;
+              _reject = null;
               current = null;
               await sleep(400);
               app.unmount();
@@ -48,11 +51,11 @@ export function genAppContainer<C>(ModalCom: any): TUseContainer<C> {
                     return await childRef.value.confirm(...args);
                   }}
                   onConfirm={(data: any) => {
-                    _resolve({ data });
+                    _resolve && _resolve({ data });
                     destroyFun();
                   }}
                   onCancel={(error: any) => {
-                    _reject(DataUtil.isUndefined(error) ? CANCEL_ERROR : error);
+                    _reject && _reject(DataUtil.isUndefined(error) ? CANCEL_ERROR : error);
                     destroyFun();
                   }}
                 >
