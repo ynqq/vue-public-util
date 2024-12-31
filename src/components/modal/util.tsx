@@ -97,8 +97,8 @@ export const showAddModal = usePlDrawer<{ num: number }, { data: number }>(Modal
 });
 export const showEditModal = usePlModal<{ num: number; action: EActionEnum }, { data: number }>(Modal, {
   title: '标题',
-  header: headerFun,
-  forever: true,
+  // header: headerFun,
+  // forever: true,
   draggable: true,
 });
 

@@ -1,8 +1,6 @@
 <template>
   <div ref="boxRef" class="box">
     {{ random }}
-    <el-input v-model="val"></el-input>
-    <Child1 />
   </div>
 </template>
 
@@ -11,7 +9,6 @@
   import { sleep, useOpen } from '@app/utils/index';
   import { useLoading } from '@app/utils/loading/index';
   import { ref, onMounted } from 'vue';
-  import Child1 from './child1.vue';
 
   export interface CustomAction extends IPLContainerValues {
     isAgree?: boolean;
@@ -22,6 +19,8 @@
 
   const boxRef = ref();
   const val = ref('base');
+  const obj = { name: 'asdad', _asd: true };
+  ref(obj);
 
   onConfirmEffect<CustomAction>(async options => {
     // eslint-disable-next-line no-console

@@ -1,6 +1,6 @@
 import { IPLContainerValues } from '@app/components/type';
 import { TOpenBucket, TOpenBucketType } from '@app/types';
-import { ComponentInternalInstance, Ref, getCurrentInstance, inject, onBeforeUnmount, ref, watchEffect } from 'vue';
+import { ComponentInternalInstance, Ref, WatchHandle, getCurrentInstance, inject, onBeforeUnmount, ref, watchEffect } from 'vue';
 
 const getBucket = (instance: ComponentInternalInstance | null | undefined): TOpenBucket | null => {
   if (instance) {
@@ -212,19 +212,22 @@ function useFun(isRoot: boolean | string = false, ctx?: ComponentInternalInstanc
   const checkIsReg = (type: TOpenBucketType) => {
     return !!getEffectByType(type)?.size;
   };
+  let watchInstance: WatchHandle;
   // 获取业务组件暴露出的属性
   const childExposeData = ref<any>({});
   const getChildExpose = <T = Record<string, any>>() => {
     const childRef = inject<Ref<T>>('childRef');
-    watchEffect(() => {
-      if (childRef?.value) {
-        childExposeData.value = childRef.value;
-      }
-    });
+    // watchInstance = watchEffect(() => {
+    //   if (childRef?.value) {
+    //     childExposeData.value = childRef.value;
+    //   }
+    // });
     return childExposeData as Ref<T>;
   };
 
   onBeforeUnmount(() => {
+
+    // watchInstance && watchInstance.stop();
     if (confirmKey) {
       deleteConfirmEffect(confirmKey);
     }
