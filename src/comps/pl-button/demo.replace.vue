@@ -17,7 +17,4 @@ const handleClick = () => {
 };
 </script>
 
-<style scoped>
-.asd {
-}
-</style>
+<style scoped></style>

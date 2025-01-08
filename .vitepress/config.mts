@@ -31,8 +31,9 @@ const replaceVueCode = (options: { css: string[] }): Plugin => {
 };
 
 // https://vitepress.dev/reference/site-config
+const base = "/vue-public-util"
 export default defineConfig({
-  base: "/vue-public-util",
+  base: base,
   vite: {
     ssr: {
       noExternal: ["@vue/repl"],
@@ -47,7 +48,7 @@ export default defineConfig({
         css: [
           "https://cdn.jsdelivr.net/npm/element-plus@latest/dist/index.css",
           "https://unpkg.com/vue-public-util@2.0.6/dist/style.css",
-          "/repl.css"
+          `${base}/repl.css`
         ],
       }),
     ],

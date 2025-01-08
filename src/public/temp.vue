@@ -7,6 +7,18 @@
     :style="css"
     v-full
     v-bind="$attrs"
+    :preview-options="{
+      customCode: {
+        importCode: `import { initCustomFormatter } from 'vue'`,
+        useCode: `if (window.devtoolsFormatters) {
+    const index = window.devtoolsFormatters.findIndex((v) => v.__vue_custom_formatter)
+    window.devtoolsFormatters.splice(index, 1)
+    initCustomFormatter()
+  } else {
+    initCustomFormatter()
+  }`,
+      },
+    }"
   />
 </template>
 
@@ -21,7 +33,7 @@ let store;
 onMounted(async () => {
   if (inBrowser) {
     const { Repl: ReplComponent } = await import("@vue/repl");
-    CodeMirror.value = (await import("@vue/repl/codemirror-editor")).default;
+    CodeMirror.value = (await import("@vue/repl/monaco-editor")).default;
     Repl.value = ReplComponent;
 
     store = (await import("@vue/repl")).useStore({
@@ -43,11 +55,11 @@ const vFull = {
       if (state === "small") {
         state = "big";
         el.classList.add("replFullScreen");
-        toggleEl.innerText = '取消全屏'
+        toggleEl.innerText = "取消全屏";
       } else {
         state = "small";
         el.classList.remove("replFullScreen");
-        toggleEl.innerText = '全屏'
+        toggleEl.innerText = "全屏";
       }
     };
   },
